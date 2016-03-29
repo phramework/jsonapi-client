@@ -1,0 +1,16 @@
+vendor/
+composer.lock
+nbproject/
+node_modules/
+**/settings.local.php
+api-test/node_modules/
+api-test/npm-debug.log
+doc/
+apidoc
+build/
+localsettings.php
+localTestsSettings.php
+.idea/**
+.idea
+certs
+files/**

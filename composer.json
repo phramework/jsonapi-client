@@ -1,0 +1,39 @@
+{
+  "name": "phramework/api-sdk",
+  "homepage": "https://phramework.github.io/",
+  "authors": [
+    {
+      "name": "Xenofon Spafaridis",
+      "email": "nohponex@gmail.com",
+      "homepage": "https://nohponex.gr"
+    },
+    {
+      "name": "Alexandros Kalliontzis",
+      "email": "alkallio@gmail.com"
+    }
+  ],
+  "require": {
+    "php": ">=7",
+    "phramework/util": "^0.0.0",
+    "phramework/jsonapi": "1.0.0-RC9"
+  },
+  "require-dev": {
+    "squizlabs/php_codesniffer": "*",
+    "phpunit/phpunit": "5.*"
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "autoload": {
+    "psr-4": {
+      "Phramework\\APISDK\\": "src"
+    }
+  },
+  "scripts": {
+    "test": [
+      "find src/ -name '*.php' -print0 | xargs -0 -L 1 php -l",
+      "find tests/ -name '*.php' -print0 | xargs -0 -L 1 php -l",
+      "phpunit"
+    ],
+    "lint": "php ./vendor/bin/phpcs -p -s --standard=RSR2 ./src ./public ./queued"
+  }
+}
