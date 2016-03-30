@@ -1,5 +1,6 @@
 {
   "name": "phramework/jsonapi-client",
+  "description": "JSONAPI client, helps creating SDK to consume your JSON API services",
   "homepage": "https://phramework.github.io/",
   "license": "Apache-2.0",
   "authors": [
