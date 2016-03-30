@@ -14,27 +14,46 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Phramework\JSONAPI\Client\Response;
+namespace Phramework\JSONAPI\Client\Exceptions;
 
-use Phramework\JSONAPI\Client\ResourceObject;
+use Phramework\JSONAPI\Client\Response\Errors;
 
 /**
  * @author Xenofon Spafaridis <nohponex@gmail.com>
  * @since 0.0.0
  */
-class Collection extends Response
+class ResponseException extends \Exception
 {
     /**
-     * An array of resource objects, an array of resource identifier objects,
-     * or an empty array
-     * @var ResourceObject[]
+     * @var Errors
      */
-    public $data = [];
+    private $response;
 
     /**
-     * Compound Documents
-     * @var ResourceObject[]
-     * @link http://jsonapi.org/format/#document-compound-documents
+     * @param Errors $response
      */
-    public $included;
+    public function __construct(Errors $response)
+    {
+        $this->response = $response;
+    }
+
+
+    /**
+     * @return Errors
+     */
+    public function getResponse()
+    {
+        return $this->response;
+    }
+
+    /**
+     * @param Errors $response
+     * @return $this
+     */
+    public function setResponse($response)
+    {
+        $this->response = $response;
+
+        return $this;
+    }
 }

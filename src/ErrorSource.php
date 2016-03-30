@@ -14,27 +14,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Phramework\JSONAPI\Client\Response;
-
-use Phramework\JSONAPI\Client\ResourceObject;
+namespace Phramework\JSONAPI\Client;
 
 /**
+ * Error source meta-class helpful for documentation and autocomplete
  * @author Xenofon Spafaridis <nohponex@gmail.com>
  * @since 0.0.0
+ * @link http://jsonapi.org/format/#error-objects
  */
-class Collection extends Response
+class ErrorSource
 {
     /**
-     * An array of resource objects, an array of resource identifier objects,
-     * or an empty array
-     * @var ResourceObject[]
+     * A a JSON Pointer [RFC6901] to the associated entity in the request
+     * document [e.g. "/data" for a primary data object, or
+     * "/data/attributes/title" for a specific attribute]
+     * @var string
      */
-    public $data = [];
+    public $pointer;
 
     /**
-     * Compound Documents
-     * @var ResourceObject[]
-     * @link http://jsonapi.org/format/#document-compound-documents
+     * A string indicating which URI query parameter caused the error
+     * @var string
      */
-    public $included;
+    public $parameter;
 }

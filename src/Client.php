@@ -16,8 +16,9 @@
  */
 namespace Phramework\JSONAPI\Client;
 
-use Phramework\JSONAPI\Client\Exceptions\Exception;
+use Phramework\JSONAPI\Client\Exceptions\ResponseException;
 use Phramework\JSONAPI\Client\Response\Collection;
+use Phramework\JSONAPI\Client\Response\Errors;
 use Phramework\JSONAPI\Client\Response\Resource;
 
 /**
@@ -120,8 +121,9 @@ abstract class Client
      * @param IncludeRelationship|null $include Include directive
      * @param \stdClass|null           $additionalHeaders Will override global
      *     headers
-     * @param \string[]                ...$additional Additional url
+     * @param \string[]                ...$additional Additional url parts
      * @return Collection
+     * @throws ResponseException When response code is not on of 200, 201, 202, 203 or 204
      * @example
      * ```php
      * $users = Users::get(
@@ -150,7 +152,11 @@ abstract class Client
      *    new Fields((object) [
      *        'user' => ['name', 'email']
      *    ]),
-     *    new IncludeRelationship('project', 'group')
+     *    new IncludeRelationship('project', 'group'),
+     *    (object) [
+     *        'Accept' => 'application/vnd.api+json'
+     *    ],
+     *    '&token=1234'
      * );
      * ```
      */
@@ -237,7 +243,7 @@ abstract class Client
      *     headers
      * @param \string[]                ...$additional Additional url
      * @return Resource
-     * @throws Exception
+     * @throws ResponseException When response code is not on of 200, 201, 202, 203 or 204
      * @example
      * ```php
      * $user = User::getById(
@@ -302,7 +308,9 @@ abstract class Client
 
     public static function post(
         \stdClass $attributes = null,
-        \stdClass $relationships = null
+        \stdClass $relationships = null,
+        \stdClass $additionalHeaders = null,
+        string ...$additional
     ) {
 
     }
@@ -310,25 +318,54 @@ abstract class Client
     public static function patch(
         string $id,
         \stdClass $attributes = null,
-        \stdClass $relationships = null
+        \stdClass $relationships = null,
+        \stdClass $additionalHeaders = null,
+        string ...$additional
     ) {
 
     }
 
     public static function delete(
-        string $id
+        string $id,
+        \stdClass $additionalHeaders = null,
+        string ...$additional
     ) {
 
     }
 
     /**
-     * Perform an cURL request
+     * Perform an cURL request to a JSON API web service over HTTP
+     * @param string         $url Request url
+     * @param string         $method Request HTTP method
+     * @param \stdClass|null $headers Request headers
+     * @param \stdClass|null $data Request body
+     * @return array which contains
+     * - $responseStatusCode
+     * - $responseHeaders
+     * - $responseBody (JSON encoded)
+     * @throws ResponseException When response code is not on of 200, 201, 202, 203 or 204
+     * @throws \Exception
+     * @example
+     * ```php
+     * list(
+     *     $responseStatusCode,
+     *     $responseHeaders,
+     *     $responseBody
+     * ) = Client::request(
+     *     'http://myapi.com/user/',
+     *     Client::METHOD_GET,
+     *     (object) [
+     *         'Content-Type' => 'application/vnd.api+json',
+     *         'Accept' => 'application/vnd.api+json'
+     *     ]
+     * );
+     * ```
      */
     public static function request(
         string $url,
         string $method = self::METHOD_GET,
         \stdClass $headers = null,
-        $data = null,
+        \stdClass $data = null,
         $flags = self::REQUEST_EMPTY_FLAG,
         //$accept = 'application/json',
         $encoding = null
@@ -417,7 +454,7 @@ abstract class Client
                 curl_setopt($handle, CURLOPT_CUSTOMREQUEST, self::METHOD_DELETE);
                 break;
             default:
-                throw new Exception('Unsupported method');
+                throw new \Exception('Unsupported method');
         }
         
         //Get response
@@ -442,26 +479,22 @@ abstract class Client
 
         curl_close($handle);
 
+        //Throw exception on response failure
+        if (!in_array($responseStatusCode, [200, 201, 202, 203, 204])) {
+            throw new ResponseException(
+                (new Errors())
+                    ->parse(json_decode($responseBody))
+                    ->setHeaders($responseHeaders)
+                    ->setStatusCode($responseStatusCode)
+            );
+        }
+
+        //Return the data of response
         return [
             $responseStatusCode,
             $responseHeaders,
             json_decode($responseBody)
         ];
-
-       /* if (!$response) {
-            throw new Exception('Error: ' . curl_error($handle));
-        }*/
-
-       /* //Throw exception on response failure
-        if (!in_array($code, array(200, 201, 202))) { // OK, Created, Accepted
-            $decoded = json_decode($response, true);
-            throw new Exception($decoded['error'], $code);
-        }*/
-
-        curl_close($handle);
-        //Return the data of response
-
-        return $response;
 
         /*return (
 

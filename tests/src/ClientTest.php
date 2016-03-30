@@ -16,7 +16,10 @@
  */
 namespace Phramework\JSONAPI\Client;
 
+use Phramework\JSONAPI\Client\APP\NotFound;
 use Phramework\JSONAPI\Client\APP\User;
+use Phramework\JSONAPI\Client\Exceptions\ResponseException;
+use Phramework\JSONAPI\Client\Response\Errors;
 use Phramework\JSONAPI\FilterAttribute;
 use Phramework\Models\Operator;
 
@@ -51,9 +54,39 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 
         $userId = $users->data[0]->id;
 
-        var_dump($users);
+        //var_dump($users);
 
         return $userId;
+    }
+
+    /**
+     * @covers ::get
+     */
+    public function testGetResponseException()
+    {
+        try {
+
+            NotFound::get();
+        } catch (ResponseException $e) {
+            $response = $e->getResponse();
+
+            $this->assertInstanceOf(
+                Errors::class,
+                $response
+            );
+
+            $this->assertCount(
+                1,
+                $response->errors
+            );
+
+            $this->assertSame(
+                404,
+                $response->errors[0]->status
+            );
+
+            var_dump($response->errors);
+        }
     }
 
     /**
@@ -67,6 +100,6 @@ class ClientTest extends \PHPUnit_Framework_TestCase
             $userId
         );
 
-        var_dump($user);
+        //var_dump($user);
     }
 }
