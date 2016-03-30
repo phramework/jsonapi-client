@@ -23,9 +23,9 @@ use Phramework\Models\Operator;
 /**
  * @author Xenofon Spafaridis <nohponex@gmail.com>
  * @since 0.0.0
- * @coversDefaultClass \Phramework\JSONAPI\Client\API
+ * @coversDefaultClass \Phramework\JSONAPI\Client\Client
  */
-class APITest extends \PHPUnit_Framework_TestCase
+class ClientTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @covers ::get
@@ -49,6 +49,24 @@ class APITest extends \PHPUnit_Framework_TestCase
             new IncludeRelationship('project', 'group')
         );*/
 
+        $userId = $users->data[0]->id;
+
         var_dump($users);
+
+        return $userId;
+    }
+
+    /**
+     * @param string $userId
+     * @covers ::get
+     * @depends  testGet
+     */
+    public function testGetById($userId)
+    {
+        $user = User::getById(
+            $userId
+        );
+
+        var_dump($user);
     }
 }

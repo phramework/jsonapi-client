@@ -33,40 +33,70 @@ class Response
     public $links;
 
     /**
+     * @var integer
+     */
+    protected $statusCode;
+
+    /**
+     * @var \stdClass
+     */
+    protected $headers;
+
+    /**
      * Response constructor.
-     * @param $links
-     * @param $meta
      */
     public function __construct(
-        $links = null,
-        $meta = null
     ) {
-        $this->links = $links;
-        $this->meta = $meta;
     }
 
     /**
-     * @return mixed
+     * @param \stdClass $response
+     * @return $this
      */
-    public function getMeta()
-    {
-        return $this->meta;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getLinks()
-    {
-        return $this->links;
-    }
-    
     public function parse(\stdClass $response) {
         $members = array_keys(get_object_vars($this));
 
         foreach ($members as $member) {
             $this->{$member} = $response->{$member} ?? null;
         }
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getStatusCode()
+    {
+        return $this->statusCode;
+    }
+
+    /**
+     * @param int $statusCode
+     * @return $this
+     */
+    public function setStatusCode($statusCode)
+    {
+        $this->statusCode = $statusCode;
+
+        return $this;
+    }
+
+    /**
+     * @return \stdClass
+     */
+    public function getHeaders()
+    {
+        return $this->headers;
+    }
+
+    /**
+     * @param \stdClass $headers
+     * @return $this
+     */
+    public function setHeaders($headers)
+    {
+        $this->headers = $headers;
 
         return $this;
     }

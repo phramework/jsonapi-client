@@ -16,13 +16,13 @@
  */
 namespace Phramework\JSONAPI\Client\APP;
 
-use Phramework\JSONAPI\Client\API;
+use Phramework\JSONAPI\Client\Client;
 
 /**
  * @author Xenofon Spafaridis <nohponex@gmail.com>
  * @since 0.0.0
  */
-class User extends API
+class User extends Client
 {
     protected static $endpoint = 'user';
     protected static $type     = 'user';

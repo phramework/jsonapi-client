@@ -34,21 +34,4 @@ class Resource extends Response
      * @var ResourceObject[]
      */
     public $included;
-
-   /**
-     * Collection constructor.
-     * @param ResourceObject[] $data
-     * @param ResourceObject[] $included
-     */
-    /* public function __construct(
-        $data = null,
-        array $included = null,
-        $links = null,
-        $meta = null
-    ) {
-        $this->data = $data;
-        $this->included = $included;
-
-        parent::__construct($meta, $links);
-    }*/
 }

@@ -16,20 +16,21 @@
  */
 require __DIR__ . '/../vendor/autoload.php';
 
-\Phramework\JSONAPI\Client\API::setGlobalAPI(
+\Phramework\JSONAPI\Client\Client::setGlobalAPI(
+    ''
 );
 
-\Phramework\JSONAPI\Client\API::setGlobalHeader(
+\Phramework\JSONAPI\Client\Client::setGlobalHeader(
     \Phramework\Models\Request::HEADER_CONTENT_TYPE,
     'application/vnd.api+json'
 );
 
-\Phramework\JSONAPI\Client\API::setGlobalHeader(
+\Phramework\JSONAPI\Client\Client::setGlobalHeader(
     \Phramework\Models\Request::HEADER_ACCEPT,
     'application/vnd.api+json'
 );
 
-\Phramework\JSONAPI\Client\API::setGlobalHeader(
+\Phramework\JSONAPI\Client\Client::setGlobalHeader(
     'Authorization',
-    'xxx'
+    ''
 );

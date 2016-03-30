@@ -21,12 +21,11 @@ use Phramework\JSONAPI\Client\Response\Collection;
 use Phramework\JSONAPI\Client\Response\Resource;
 
 /**
- * Class API
  * @author Xenofon Spafaridis <nohponex@gmail.com>
  * @since 0.0.0
  * @todo handle errors
  */
-abstract class API
+abstract class Client
 {
     /**
      * @var object|null
@@ -142,7 +141,18 @@ abstract class API
      *     )
      * );
      * ```
-     * @todo provide examples for all arguments
+     * @example
+     * ```php
+     * $users = Users::get(
+     *    null,
+     *    null,
+     *    new Sort(null, 'created', false),
+     *    new Fields((object) [
+     *        'user' => ['name', 'email']
+     *    ]),
+     *    new IncludeRelationship('project', 'group')
+     * );
+     * ```
      */
     public static function get(
         Page $page = null,
@@ -155,7 +165,7 @@ abstract class API
     ) {
         $API = self::getGlobalAPI();
 
-        $url = $API . static::$endpoint;
+        $url = $API . static::$endpoint . '/';
 
         //prepare parts
 
@@ -199,7 +209,76 @@ abstract class API
 
         $headers = static::prepareHeaders($additionalHeaders);
 
-        /*var_dump($url);*/
+        list(
+            $responseStatusCode,
+            $responseHeaders,
+            $responseBody
+        ) = static::request(
+            $url,
+            self::METHOD_GET,
+            $headers
+        );
+
+        $collection = (new Collection())->parse(
+            $responseBody
+        );
+
+        $collection->setStatusCode($responseStatusCode);
+        $collection->setHeaders($responseHeaders);
+
+        return $collection;
+    }
+
+    /**
+     * @param string                   $id      Resource id
+     * @param Fields|null              $fields  Fields directive
+     * @param IncludeRelationship|null $include Include directive
+     * @param \stdClass|null           $additionalHeaders Will override global
+     *     headers
+     * @param \string[]                ...$additional Additional url
+     * @return Resource
+     * @throws Exception
+     * @example
+     * ```php
+     * $user = User::getById(
+     *     '10',
+     *     null,
+     *     new IncludeRelationship('project', 'group')
+     * )
+     * ```
+     */
+    public static function getById(
+        string $id,
+        Fields $fields = null,
+        IncludeRelationship $include = null,
+        \stdClass $additionalHeaders = null,
+        string ...$additional
+    ) {
+        $API = self::getGlobalAPI();
+
+        $url = $API . static::$endpoint . '/' . $id . '/';
+
+        //prepare parts
+        $fieldsPart  = ($fields  ? $fields->toURL()  : '');
+        $includePart = ($include ? $include->toURL() : '');
+
+        $questionMark = false;
+
+        //append parts
+        if (!empty($fieldsPart)) {
+            $url = $url . ($questionMark ? '&' : '?') . $fieldsPart;
+            $questionMark = true;
+        }
+
+        if (!empty($includePart)) {
+            $url = $url . ($questionMark ? '&' : '?') . $includePart;
+            $questionMark = true;
+        }
+
+        //Append additional
+        $url = $url . implode('', $additional);
+
+        $headers = static::prepareHeaders($additionalHeaders);
 
         list(
             $responseStatusCode,
@@ -210,37 +289,15 @@ abstract class API
             self::METHOD_GET,
             $headers
         );
-/*
-        var_dump(
-            $responseStatusCode,
-            $responseHeaders,
-            $responseBody
-        );*/
-
-        $collection = (new Collection())->parse(
-            $responseBody
-        );
 
         $resource = (new Resource())->parse(
             $responseBody
         );
 
-        return $collection;
+        $resource->setStatusCode($responseStatusCode);
+        $resource->setHeaders($responseHeaders);
 
-        //data
-        //include
-        //links
-        //meta
-    }
-
-    public static function getById(
-        $id,
-        Fields $fields = null,
-        IncludeRelationship $include = null,
-        \stdClass $additionalHeaders = null,
-        string ...$additional
-    ) {
-
+        return $resource;
     }
 
     public static function post(
