@@ -1,5 +1,5 @@
 {
-  "name": "phramework/api-sdk",
+  "name": "phramework/jsonapi-client",
   "homepage": "https://phramework.github.io/",
   "authors": [
     {
@@ -25,7 +25,12 @@
   "prefer-stable": true,
   "autoload": {
     "psr-4": {
-      "Phramework\\APISDK\\": "src"
+      "Phramework\\JSONAPI\\Client\\": "src"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Phramework\\JSONAPI\\Client\\APP\\": "tests/APP"
     }
   },
   "scripts": {

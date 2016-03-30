@@ -14,22 +14,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-require __DIR__ . '/../vendor/autoload.php';
+namespace Phramework\JSONAPI\Client\APP;
 
-\Phramework\JSONAPI\Client\API::setGlobalAPI(
-);
+use Phramework\JSONAPI\Client\API;
 
-\Phramework\JSONAPI\Client\API::setGlobalHeader(
-    \Phramework\Models\Request::HEADER_CONTENT_TYPE,
-    'application/vnd.api+json'
-);
-
-\Phramework\JSONAPI\Client\API::setGlobalHeader(
-    \Phramework\Models\Request::HEADER_ACCEPT,
-    'application/vnd.api+json'
-);
-
-\Phramework\JSONAPI\Client\API::setGlobalHeader(
-    'Authorization',
-    'xxx'
-);
+/**
+ * @author Xenofon Spafaridis <nohponex@gmail.com>
+ * @since 0.0.0
+ */
+class User extends API
+{
+    protected static $endpoint = 'user';
+    protected static $type     = 'user';
+}

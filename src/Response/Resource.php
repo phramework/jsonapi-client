@@ -14,35 +14,41 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Phramework\JSONAPI\Client;
+namespace Phramework\JSONAPI\Client\Response;
+
+use Phramework\JSONAPI\Client\ResourceObject;
 
 /**
  * @author Xenofon Spafaridis <nohponex@gmail.com>
  * @since 0.0.0
  */
-class IncludeRelationship
+class Resource extends Response
 {
-    protected $types;
-
-    public function __construct(string ...$types)
-    {
-        $this->types = $types;
-    }
 
     /**
-     * @return string
+     * @var ResourceObject
      */
-    public function toURL(): string
-    {
-        return sprintf(
-            'include=%s',
-            implode(
-                ',',
-                array_map(
-                    'urlencode',
-                    $this->types
-                )
-            )
-        );
-    }
+    public $data;
+
+    /**
+     * @var ResourceObject[]
+     */
+    public $included;
+
+   /**
+     * Collection constructor.
+     * @param ResourceObject[] $data
+     * @param ResourceObject[] $included
+     */
+    /* public function __construct(
+        $data = null,
+        array $included = null,
+        $links = null,
+        $meta = null
+    ) {
+        $this->data = $data;
+        $this->included = $included;
+
+        parent::__construct($meta, $links);
+    }*/
 }

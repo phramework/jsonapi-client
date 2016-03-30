@@ -1,19 +1,41 @@
 <?php
+/**
+ * Copyright 2016 Xenofon Spafaridis
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+namespace Phramework\JSONAPI\Client;
 
-namespace Phramework\APISDK;
-use Phramework\APISDK\Exceptions\Exception;
+use Phramework\JSONAPI\Client\Exceptions\Exception;
+use Phramework\JSONAPI\Client\Response\Collection;
+use Phramework\JSONAPI\Client\Response\Resource;
 
 /**
  * Class API
  * @author Xenofon Spafaridis <nohponex@gmail.com>
  * @since 0.0.0
+ * @todo handle errors
  */
-class API
+abstract class API
 {
     /**
      * @var object|null
      */
     protected static $globalHeaders = null;
+    /**
+     * @var string|null
+     */
+    protected static $globalAPI     = null;
 
     const METHOD_GET    = 'GET';
     const METHOD_HEAD   = 'HEAD';
@@ -30,18 +52,65 @@ class API
      * @var string
      * @todo
      */
-    protected static $endpoint = 'user';
+    protected static $endpoint = null;
 
     /**
      * @var string
      * @todo
      */
-    protected static $type     = 'user';
+    protected static $type     = null;
 
     /**
+     * Overrides global API
      * @var string|null
      */
-    protected static $api      =  null;
+    protected static $API      =  null;
+
+    /**
+     * MAY be overridden
+     * @return \stdClass
+     */
+    protected static function getHeaders()
+    {
+        return new \stdClass();
+    }
+
+    /**
+     * Get API url
+     * @return string
+     */
+    protected function prepareAPI()
+    {
+        if (static::$API !== null) {
+            return static::$API;
+        }
+
+        return static::getGlobalAPI() ?? '';
+    }
+
+    /**
+     * Prepare headers
+     * @param \stdClass|null $additional Additional headers
+     * @return \stdClass
+     */
+    protected function prepareHeaders(\stdClass $additional = null)
+    {
+        if ($additional === null) {
+            $additional = new \stdClass();
+        }
+
+        $headers = static::getGlobalHeaders();
+
+        foreach (static::getHeaders() as $key => $value) {
+            $headers->{$key} = $value;
+        }
+
+        foreach ($additional as $key => $value) {
+            $headers->{$key} = $value;
+        }
+
+        return $headers;
+    }
 
     /**
      * Get collection of resources
@@ -52,8 +121,8 @@ class API
      * @param IncludeRelationship|null $include Include directive
      * @param \stdClass|null           $additionalHeaders Will override global
      *     headers
-     * @param \string[]                ...$additional
-     * @return string
+     * @param \string[]                ...$additional Additional url
+     * @return Collection
      * @example
      * ```php
      * $users = Users::get(
@@ -73,6 +142,7 @@ class API
      *     )
      * );
      * ```
+     * @todo provide examples for all arguments
      */
     public static function get(
         Page $page = null,
@@ -81,18 +151,23 @@ class API
         Fields $fields = null,
         IncludeRelationship $include = null,
         \stdClass $additionalHeaders = null,
-        string ...$additional //todo
+        string ...$additional
     ) {
-        $API = 'https://translate.nohponex.gr/';
-        $url = $API . self::$endpoint;
+        $API = self::getGlobalAPI();
 
-        $pagePart =  ($page ? $page->toURL() : '');
-        $filterPart = ($filter ? $filter->toURL(self::$type) : '');
-        $sortPart = ($sort ? $sort->toURL() : '');
-        $fieldsPart = ($fields ? $fields->toURL() : '');
-        $includePart = ($include ? $include->toURL() : '');
+        $url = $API . static::$endpoint;
+
+        //prepare parts
+
+        $pagePart    = ($page    ? $page->toURL()                : '');
+        $filterPart  = ($filter  ? $filter->toURL(static::$type) : '');
+        $sortPart    = ($sort    ? $sort->toURL()                : '');
+        $fieldsPart  = ($fields  ? $fields->toURL()              : '');
+        $includePart = ($include ? $include->toURL()             : '');
 
         $questionMark = false;
+
+        //append parts
 
         if (!empty($pagePart)) {
             $url = $url . ($questionMark ? '&' : '?') . $pagePart;
@@ -119,16 +194,50 @@ class API
             $questionMark = true;
         }
 
+        //Append additional
         $url = $url . implode('', $additional);
 
-        return $url;
+        $headers = static::prepareHeaders($additionalHeaders);
+
+        /*var_dump($url);*/
+
+        list(
+            $responseStatusCode,
+            $responseHeaders,
+            $responseBody
+        ) = static::request(
+            $url,
+            self::METHOD_GET,
+            $headers
+        );
+/*
+        var_dump(
+            $responseStatusCode,
+            $responseHeaders,
+            $responseBody
+        );*/
+
+        $collection = (new Collection())->parse(
+            $responseBody
+        );
+
+        $resource = (new Resource())->parse(
+            $responseBody
+        );
+
+        return $collection;
+
+        //data
+        //include
+        //links
+        //meta
     }
 
     public static function getById(
         $id,
         Fields $fields = null,
         IncludeRelationship $include = null,
-        \stdClass $headers = null,
+        \stdClass $additionalHeaders = null,
         string ...$additional
     ) {
 
@@ -167,8 +276,7 @@ class API
         //$accept = 'application/json',
         $encoding = NULL
 
-    ){
-
+    ) {
         //Extract flags
         //Is the request binary
         $binary = ($flags & self::REQUEST_BINARY) != 0;
@@ -190,11 +298,20 @@ class API
             $headers[] = 'Content-Encoding: ' . $encoding;
         }*/
 
+        $headersArray = [];
+
+        foreach ($headers as $key => $value) {
+            $headersArray[] = "$key: $value";
+        }
+
         //Initialize curl
         $handle = curl_init();
+
         curl_setopt($handle, CURLOPT_URL, $url);
-        curl_setopt($handle, CURLOPT_HTTPHEADER, $headers);
+        curl_setopt($handle, CURLOPT_HTTPHEADER, $headersArray);
         curl_setopt($handle, CURLOPT_RETURNTRANSFER, TRUE);
+        curl_setopt($handle, CURLOPT_HEADER, true);
+
         //Set timeout values ( in seconds )
         //curl_setopt($handle, CURLOPT_CONNECTTIMEOUT, $this->settings[self::SETTING_CURLOPT_CONNECTTIMEOUT]);
         //curl_setopt($handle, CURLOPT_TIMEOUT, $this->settings[self::SETTING_CURLOPT_TIMEOUT]);
@@ -202,10 +319,12 @@ class API
         //Security options
         curl_setopt($handle, CURLOPT_SSL_VERIFYHOST, 2);
         curl_setopt($handle, CURLOPT_SSL_VERIFYPEER, FALSE);
-        //On binary transfers
+
+        /*//On binary transfers
         if ($binary) {
             curl_setopt($handle, CURLOPT_BINARYTRANSFER, TRUE);
-        }
+        }*/
+
         //Switch on HTTP Request method
         switch ($method) {
             case self::METHOD_GET: //On METHOD_GET
@@ -236,18 +355,17 @@ class API
         //Get response
         $response = curl_exec($handle);
         //Get response code
-        //Get response code
         $responseStatusCode = curl_getinfo($handle, CURLINFO_HTTP_CODE);
         $headerSize = curl_getinfo($handle, CURLINFO_HEADER_SIZE);
 
         $responseHeadersTemp = str_replace("\r", '', substr($response, 0, $headerSize));
-        $responseHeaders = [];
+        $responseHeaders = new \stdClass;
 
         foreach (explode("\n", $responseHeadersTemp) as $i => $line) {
             if ($i !== 0 && !empty($line)) {
                 if (count($parts = explode(': ', $line)) === 2) {
                     list($key, $value) = explode(': ', $line);
-                    $responseHeaders[$key] = $value;
+                    $responseHeaders->{$key} = $value;
                 }
             }
         }
@@ -259,10 +377,8 @@ class API
         return [
            $responseStatusCode,
            $responseHeaders,
-           $responseBody
+           json_decode($responseBody)
        ];
-
-
 
        /* if (!$response) {
             throw new Exception('Error: ' . curl_error($handle));
@@ -285,6 +401,24 @@ class API
     }
 
     /**
+     * @param string|null $API
+     */
+    public static function setGlobalAPI(string $API = null)
+    {
+
+        static::$globalAPI = $API;
+    }
+
+    /**
+     * @return string|null
+     */
+    public static function getGlobalAPI()
+    {
+
+        return static::$globalAPI;
+    }
+
+    /**
      * @param string $key
      * @param string $header
      */
@@ -300,7 +434,7 @@ class API
     /**
      * @return null
      */
-    public static function getGlobalHeader()
+    public static function getGlobalHeaders()
     {
         if (static::$globalHeaders === null) {
             static::$globalHeaders = new \stdClass();
