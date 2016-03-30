@@ -1,6 +1,7 @@
 {
   "name": "phramework/jsonapi-client",
   "homepage": "https://phramework.github.io/",
+  "license": "Apache-2.0",
   "authors": [
     {
       "name": "Xenofon Spafaridis",
@@ -39,6 +40,6 @@
       "find tests/ -name '*.php' -print0 | xargs -0 -L 1 php -l",
       "phpunit"
     ],
-    "lint": "php ./vendor/bin/phpcs -p -s --standard=RSR2 ./src ./public ./queued"
+    "lint": "php ./vendor/bin/phpcs -p -s --standard=PSR2 ./src ./tests/src"
   }
 }

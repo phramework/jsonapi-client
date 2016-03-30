@@ -310,8 +310,8 @@ abstract class Client
     public static function patch(
         string $id,
         \stdClass $attributes = null,
-        \stdClass $relationships = null)
-    {
+        \stdClass $relationships = null
+    ) {
 
     }
 
@@ -328,11 +328,10 @@ abstract class Client
         string $url,
         string $method = self::METHOD_GET,
         \stdClass $headers = null,
-        $data = NULL,
+        $data = null,
         $flags = self::REQUEST_EMPTY_FLAG,
         //$accept = 'application/json',
-        $encoding = NULL
-
+        $encoding = null
     ) {
         //Extract flags
         //Is the request binary
@@ -366,7 +365,7 @@ abstract class Client
 
         curl_setopt($handle, CURLOPT_URL, $url);
         curl_setopt($handle, CURLOPT_HTTPHEADER, $headersArray);
-        curl_setopt($handle, CURLOPT_RETURNTRANSFER, TRUE);
+        curl_setopt($handle, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($handle, CURLOPT_HEADER, true);
 
         //Set timeout values ( in seconds )
@@ -375,11 +374,11 @@ abstract class Client
         curl_setopt($handle, CURLOPT_NOSIGNAL, 1);
         //Security options
         curl_setopt($handle, CURLOPT_SSL_VERIFYHOST, 2);
-        curl_setopt($handle, CURLOPT_SSL_VERIFYPEER, FALSE);
+        curl_setopt($handle, CURLOPT_SSL_VERIFYPEER, false);
 
         /*//On binary transfers
         if ($binary) {
-            curl_setopt($handle, CURLOPT_BINARYTRANSFER, TRUE);
+            curl_setopt($handle, CURLOPT_BINARYTRANSFER, true);
         }*/
 
         //Switch on HTTP Request method
@@ -391,15 +390,27 @@ abstract class Client
                 curl_setopt($handle, CURLOPT_POST, true);
                 if ($data && $form_encoded) { //Encode fields if required ( URL ENCODED )
                     curl_setopt(
-                        $handle, CURLOPT_POSTFIELDS, http_build_query($data));
-                } else if ($data) {
-                    curl_setopt($handle, CURLOPT_POSTFIELDS, $data);
+                        $handle,
+                        CURLOPT_POSTFIELDS,
+                        http_build_query($data)
+                    );
+                } elseif ($data) {
+                    curl_setopt(
+                        $handle,
+                        CURLOPT_POSTFIELDS,
+                        $data
+                    );
                 }
                 break;
             case self::METHOD_PUT: //On METHOD_PUT
                 curl_setopt($handle, CURLOPT_CUSTOMREQUEST, self::METHOD_PUT);
+                //todo only if json
                 if ($data) {
-                    curl_setopt($handle, CURLOPT_POSTFIELDS, json_encode($data));
+                    curl_setopt(
+                        $handle,
+                        CURLOPT_POSTFIELDS,
+                        json_encode($data)
+                    );
                 }
                 break;
             case self::METHOD_DELETE: //On METHOD_DELETE
@@ -432,10 +443,10 @@ abstract class Client
         curl_close($handle);
 
         return [
-           $responseStatusCode,
-           $responseHeaders,
-           json_decode($responseBody)
-       ];
+            $responseStatusCode,
+            $responseHeaders,
+            json_decode($responseBody)
+        ];
 
        /* if (!$response) {
             throw new Exception('Error: ' . curl_error($handle));

@@ -20,7 +20,7 @@ namespace Phramework\JSONAPI\Client\Response;
  * @author Xenofon Spafaridis <nohponex@gmail.com>
  * @since 0.0.0
  */
-class Response
+abstract class Response
 {
     /**
      * @var \stdClass
@@ -43,17 +43,13 @@ class Response
     protected $headers;
 
     /**
-     * Response constructor.
-     */
-    public function __construct(
-    ) {
-    }
-
-    /**
+     * Parse response object, will copy any top members available at this
+     * Response instance
      * @param \stdClass $response
      * @return $this
      */
-    public function parse(\stdClass $response) {
+    public function parse(\stdClass $response)
+    {
         $members = array_keys(get_object_vars($this));
 
         foreach ($members as $member) {

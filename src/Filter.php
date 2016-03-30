@@ -15,6 +15,7 @@
  * limitations under the License.
  */
 namespace Phramework\JSONAPI\Client;
+
 use Phramework\JSONAPI\FilterAttribute;
 use Phramework\JSONAPI\FilterJSONAttribute;
 

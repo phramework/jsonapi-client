@@ -16,22 +16,15 @@
  */
 namespace Phramework\JSONAPI\Client\Response;
 
-use Phramework\JSONAPI\Client\ResourceObject;
-
 /**
  * @author Xenofon Spafaridis <nohponex@gmail.com>
  * @since 0.0.0
  */
-class Resource extends Response
+class Errors extends Response
 {
-
     /**
-     * @var ResourceObject
+     * @var \stdClass[]
+     * @todo add errors object
      */
-    public $data;
-
-    /**
-     * @var ResourceObject[]
-     */
-    public $included;
+    public $errors;
 }
