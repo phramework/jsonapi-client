@@ -48,12 +48,15 @@ abstract class Response
      * @param \stdClass $response
      * @return $this
      */
-    public function parse(\stdClass $response)
+    public function parse(\stdClass $response = null)
     {
-        $members = array_keys(get_object_vars($this));
+        if ($response !== null) {
+            
+            $members = array_keys(get_object_vars($this));
 
-        foreach ($members as $member) {
-            $this->{$member} = $response->{$member} ?? null;
+            foreach ($members as $member) {
+                $this->{$member} = $response->{$member} ?? null;
+            }
         }
 
         return $this;

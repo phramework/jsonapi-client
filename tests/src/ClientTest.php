@@ -25,7 +25,6 @@ use Phramework\Models\Operator;
 
 /**
  * @author Xenofon Spafaridis <nohponex@gmail.com>
- * @since 0.0.0
  * @coversDefaultClass \Phramework\JSONAPI\Client\Client
  */
 class ClientTest extends \PHPUnit_Framework_TestCase
@@ -101,5 +100,34 @@ class ClientTest extends \PHPUnit_Framework_TestCase
         );
 
         //var_dump($user);
+    }
+
+    public function testPost()
+    {
+        $response = User::post(
+            (object)[
+                'username' => 'phramework',
+                'email' => 'phramework@phramework.ph'
+            ],
+            (new RelationshipsData())
+                ->append('group', '29')
+        );
+
+        /*(object)[
+                'measurement_template' => (object) [
+                    'data' => (object) [
+                        'type' => 'measurement_template',
+                        'id' => '29'
+                    ]
+                ],
+                'device' => (object) [
+                    'data' => (object) [
+                        'type' => 'device',
+                        'id' => '1'
+                    ]
+                ]
+            ]*/
+
+        var_dump($response);
     }
 }

@@ -25,6 +25,7 @@ use Phramework\JSONAPI\Client\Response\Resource;
  * @author Xenofon Spafaridis <nohponex@gmail.com>
  * @since 0.0.0
  * @todo handle errors
+ * @todo add postbatch
  */
 abstract class Client
 {
@@ -306,23 +307,114 @@ abstract class Client
         return $resource;
     }
 
+    /**
+     * @param \stdClass|null         $attributes
+     * @param RelationshipsData|null $relationships
+     * @param \stdClass|null         $additionalHeaders
+     * @param \string[]              ...$additional
+     * @return $this
+     * @throws ResponseException
+     * @throws \Exception
+     */
     public static function post(
         \stdClass $attributes = null,
-        \stdClass $relationships = null,
+        RelationshipsData  $relationships = null,
         \stdClass $additionalHeaders = null,
         string ...$additional
     ) {
+        $API = self::getGlobalAPI();
 
+        $url = $API . static::$endpoint . '/';
+
+        //Append additional
+        $url = $url . implode('', $additional);
+
+        $headers = static::prepareHeaders($additionalHeaders);
+
+        $body = (object) [
+            'data' => (object) [
+                'type' => static::$type
+            ]
+        ];
+
+        if ($attributes !== null) {
+            $body->data->attributes = $attributes;
+        }
+
+        if ($relationships !== null) {
+            $body->data->relationships = $relationships->getRelationships();
+        }
+
+        list(
+            $responseStatusCode,
+            $responseHeaders,
+            $responseBody
+        ) = static::request(
+            $url,
+            self::METHOD_POST,
+            $headers,
+            $body
+        );
+
+        $resource = (new Resource())->parse(
+            $responseBody
+        );
+
+        $resource->setStatusCode($responseStatusCode);
+        $resource->setHeaders($responseHeaders);
+
+        return $resource;
     }
 
     public static function patch(
         string $id,
         \stdClass $attributes = null,
-        \stdClass $relationships = null,
+        RelationshipsData  $relationships = null,
         \stdClass $additionalHeaders = null,
         string ...$additional
     ) {
+        $API = self::getGlobalAPI();
 
+        $url = $API . static::$endpoint . '/' . $id . '/';
+
+        //Append additional
+        $url = $url . implode('', $additional);
+
+        $headers = static::prepareHeaders($additionalHeaders);
+
+        $body = (object) [
+            'data' => (object) [
+                'type' => static::$type
+            ]
+        ];
+
+        if ($attributes !== null) {
+            $body->data->attributes = $attributes;
+        }
+
+        if ($relationships !== null) {
+            $body->data->relationships = $relationships->getRelationships();
+        }
+
+        list(
+            $responseStatusCode,
+            $responseHeaders,
+            $responseBody
+        ) = static::request(
+            $url,
+            self::METHOD_PATCH,
+            $headers,
+            $body
+        );
+
+        $resource = (new Resource())->parse(
+            $responseBody
+        );
+
+        $resource->setStatusCode($responseStatusCode);
+        $resource->setHeaders($responseHeaders);
+
+        return $resource;
     }
 
     public static function delete(
@@ -330,7 +422,33 @@ abstract class Client
         \stdClass $additionalHeaders = null,
         string ...$additional
     ) {
+        $API = self::getGlobalAPI();
 
+        $url = $API . static::$endpoint . '/' . $id . '/';
+
+        //Append additional
+        $url = $url . implode('', $additional);
+
+        $headers = static::prepareHeaders($additionalHeaders);
+
+        list(
+            $responseStatusCode,
+            $responseHeaders,
+            $responseBody
+        ) = static::request(
+            $url,
+            self::METHOD_DELETE,
+            $headers
+        );
+
+        $resource = (new Resource())->parse(
+            $responseBody
+        );
+
+        $resource->setStatusCode($responseStatusCode);
+        $resource->setHeaders($responseHeaders);
+
+        return $resource;
     }
 
     /**
@@ -374,7 +492,7 @@ abstract class Client
         //Is the request binary
         $binary = ($flags & self::REQUEST_BINARY) != 0;
         //If the request parameters form encoded
-        $form_encoded = !(($flags & self::REQUEST_NOT_URL_ENCODED) != 0);
+        $form_encoded = false;// !(($flags & self::REQUEST_NOT_URL_ENCODED) != 0);
         //Initialize headers
 
         /*$headers = array(
@@ -435,7 +553,7 @@ abstract class Client
                     curl_setopt(
                         $handle,
                         CURLOPT_POSTFIELDS,
-                        $data
+                        json_encode($data)
                     );
                 }
                 break;
@@ -481,9 +599,10 @@ abstract class Client
 
         //Throw exception on response failure
         if (!in_array($responseStatusCode, [200, 201, 202, 203, 204])) {
+            var_dump($responseBody);
             throw new ResponseException(
                 (new Errors())
-                    ->parse(json_decode($responseBody))
+                    ->parse(json_decode($responseBody) ?? new \stdClass)
                     ->setHeaders($responseHeaders)
                     ->setStatusCode($responseStatusCode)
             );
