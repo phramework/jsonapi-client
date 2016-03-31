@@ -21,17 +21,21 @@ use Phramework\JSONAPI\Client\ResourceObject;
 /**
  * @author Xenofon Spafaridis <nohponex@gmail.com>
  * @since 0.0.0
+ * @link http://jsonapi.org/format/#document-resource-objects
  */
 class Resource extends Response
 {
 
     /**
+     * A single resource object, a single resource identifier object, or null
      * @var ResourceObject
      */
-    public $data;
+    public $data = null;
 
     /**
+     * Compound Documents
      * @var ResourceObject[]
+     * @link http://jsonapi.org/format/#document-compound-documents
      */
     public $included;
 }

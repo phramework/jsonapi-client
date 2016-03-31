@@ -14,13 +14,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Phramework\JSONAPI\Client\Exceptions;
+namespace Phramework\JSONAPI\Client\APP;
+
+use Phramework\JSONAPI\Client\Client;
 
 /**
  * @author Xenofon Spafaridis <nohponex@gmail.com>
  * @since 0.0.0
  */
-class Exception extends \Exception
+class NotFound extends Client
 {
-
+    protected static $endpoint = 'not_found';
+    protected static $type     = 'not_found';
 }

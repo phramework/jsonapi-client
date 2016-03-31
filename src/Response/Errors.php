@@ -16,15 +16,17 @@
  */
 namespace Phramework\JSONAPI\Client\Response;
 
+use Phramework\JSONAPI\Client\Error;
+
 /**
  * @author Xenofon Spafaridis <nohponex@gmail.com>
  * @since 0.0.0
+ * @link http://jsonapi.org/format/#error-objects
  */
 class Errors extends Response
 {
     /**
-     * @var \stdClass[]
-     * @todo add errors object
+     * @var Error[]
      */
     public $errors;
 }

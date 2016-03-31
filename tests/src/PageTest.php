@@ -14,27 +14,35 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Phramework\JSONAPI\Client\Response;
-
-use Phramework\JSONAPI\Client\ResourceObject;
+namespace Phramework\JSONAPI\Client;
 
 /**
  * @author Xenofon Spafaridis <nohponex@gmail.com>
- * @since 0.0.0
+ * @coversDefaultClass \Phramework\JSONAPI\Client\Page
  */
-class Collection extends Response
+class PageTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * An array of resource objects, an array of resource identifier objects,
-     * or an empty array
-     * @var ResourceObject[]
+     * @covers ::toURL
      */
-    public $data = [];
+    public function testToURL()
+    {
+        $this->assertSame(
+            'page[limit]=10',
+            (new Page(10))
+                ->toURL()
+        );
 
-    /**
-     * Compound Documents
-     * @var ResourceObject[]
-     * @link http://jsonapi.org/format/#document-compound-documents
-     */
-    public $included;
+        $this->assertSame(
+            'page[offset]=10',
+            (new Page(null, 10))
+                ->toURL()
+        );
+
+        $this->assertSame(
+            'page[limit]=3&page[offset]=2',
+            (new Page(3, 2))
+                ->toURL()
+        );
+    }
 }

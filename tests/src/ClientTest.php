@@ -16,13 +16,15 @@
  */
 namespace Phramework\JSONAPI\Client;
 
+use Phramework\JSONAPI\Client\APP\NotFound;
 use Phramework\JSONAPI\Client\APP\User;
+use Phramework\JSONAPI\Client\Exceptions\ResponseException;
+use Phramework\JSONAPI\Client\Response\Errors;
 use Phramework\JSONAPI\FilterAttribute;
 use Phramework\Models\Operator;
 
 /**
  * @author Xenofon Spafaridis <nohponex@gmail.com>
- * @since 0.0.0
  * @coversDefaultClass \Phramework\JSONAPI\Client\Client
  */
 class ClientTest extends \PHPUnit_Framework_TestCase
@@ -51,9 +53,39 @@ class ClientTest extends \PHPUnit_Framework_TestCase
 
         $userId = $users->data[0]->id;
 
-        var_dump($users);
+        //var_dump($users);
 
         return $userId;
+    }
+
+    /**
+     * @covers ::get
+     */
+    public function testGetResponseException()
+    {
+        try {
+
+            NotFound::get();
+        } catch (ResponseException $e) {
+            $response = $e->getResponse();
+
+            $this->assertInstanceOf(
+                Errors::class,
+                $response
+            );
+
+            $this->assertCount(
+                1,
+                $response->errors
+            );
+
+            $this->assertSame(
+                404,
+                $response->errors[0]->status
+            );
+
+            var_dump($response->errors);
+        }
     }
 
     /**
@@ -67,6 +99,35 @@ class ClientTest extends \PHPUnit_Framework_TestCase
             $userId
         );
 
-        var_dump($user);
+        //var_dump($user);
+    }
+
+    public function testPost()
+    {
+        $response = User::post(
+            (object)[
+                'username' => 'phramework',
+                'email' => 'phramework@phramework.ph'
+            ],
+            (new RelationshipsData())
+                ->append('group', '29')
+        );
+
+        /*(object)[
+                'measurement_template' => (object) [
+                    'data' => (object) [
+                        'type' => 'measurement_template',
+                        'id' => '29'
+                    ]
+                ],
+                'device' => (object) [
+                    'data' => (object) [
+                        'type' => 'device',
+                        'id' => '1'
+                    ]
+                ]
+            ]*/
+
+        var_dump($response);
     }
 }
