@@ -80,7 +80,7 @@ abstract class Client
      * Get API url
      * @return string
      */
-    protected function prepareAPI()
+    protected static function prepareAPI()
     {
         if (static::$API !== null) {
             return static::$API;
@@ -94,7 +94,7 @@ abstract class Client
      * @param \stdClass|null $additional Additional headers
      * @return \stdClass
      */
-    protected function prepareHeaders(\stdClass $additional = null)
+    protected static function prepareHeaders(\stdClass $additional = null)
     {
         if ($additional === null) {
             $additional = new \stdClass();
