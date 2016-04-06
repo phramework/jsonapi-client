@@ -25,7 +25,7 @@ use Phramework\JSONAPI\Client\Response\Resource;
  * @author Xenofon Spafaridis <nohponex@gmail.com>
  * @since 0.0.0
  * @todo handle errors
- * @todo add postbatch
+ * @todo add post batch
  */
 abstract class Client
 {
@@ -170,7 +170,7 @@ abstract class Client
         \stdClass $additionalHeaders = null,
         string ...$additional
     ) {
-        $API = self::getGlobalAPI();
+        $API = self::prepareAPI();
 
         $url = $API . static::$endpoint . '/';
 
@@ -261,7 +261,7 @@ abstract class Client
         \stdClass $additionalHeaders = null,
         string ...$additional
     ) {
-        $API = self::getGlobalAPI();
+        $API = self::prepareAPI();
 
         $url = $API . static::$endpoint . '/' . $id . '/';
 
@@ -322,7 +322,7 @@ abstract class Client
         \stdClass $additionalHeaders = null,
         string ...$additional
     ) {
-        $API = self::getGlobalAPI();
+        $API = self::prepareAPI();
 
         $url = $API . static::$endpoint . '/';
 
@@ -373,7 +373,7 @@ abstract class Client
         \stdClass $additionalHeaders = null,
         string ...$additional
     ) {
-        $API = self::getGlobalAPI();
+        $API = self::prepareAPI();
 
         $url = $API . static::$endpoint . '/' . $id . '/';
 
@@ -417,12 +417,63 @@ abstract class Client
         return $resource;
     }
 
+    public static function put(
+        string $id,
+        \stdClass $attributes = null,
+        RelationshipsData  $relationships = null,
+        \stdClass $additionalHeaders = null,
+        string ...$additional
+    ) {
+        $API = self::prepareAPI();
+
+        $url = $API . static::$endpoint . '/' . $id . '/';
+
+        //Append additional
+        $url = $url . implode('', $additional);
+
+        $headers = static::prepareHeaders($additionalHeaders);
+
+        $body = (object) [
+            'data' => (object) [
+                'type' => static::$type
+            ]
+        ];
+
+        if ($attributes !== null) {
+            $body->data->attributes = $attributes;
+        }
+
+        if ($relationships !== null) {
+            $body->data->relationships = $relationships->getRelationships();
+        }
+
+        list(
+            $responseStatusCode,
+            $responseHeaders,
+            $responseBody
+        ) = static::request(
+            $url,
+            self::METHOD_PUT,
+            $headers,
+            $body
+        );
+
+        $resource = (new Resource())->parse(
+            $responseBody
+        );
+
+        $resource->setStatusCode($responseStatusCode);
+        $resource->setHeaders($responseHeaders);
+
+        return $resource;
+    }
+
     public static function delete(
         string $id,
         \stdClass $additionalHeaders = null,
         string ...$additional
     ) {
-        $API = self::getGlobalAPI();
+        $API = self::prepareAPI();
 
         $url = $API . static::$endpoint . '/' . $id . '/';
 
@@ -623,10 +674,17 @@ abstract class Client
     /**
      * @param string|null $API
      */
+    public static function setAPI(string $API = null)
+    {
+        static::$API = $API;
+    }
+
+    /**
+     * @param string|null $API
+     */
     public static function setGlobalAPI(string $API = null)
     {
-
-        static::$globalAPI = $API;
+        self::$globalAPI = $API;
     }
 
     /**
@@ -635,7 +693,7 @@ abstract class Client
     public static function getGlobalAPI()
     {
 
-        return static::$globalAPI;
+        return self::$globalAPI;
     }
 
     /**
