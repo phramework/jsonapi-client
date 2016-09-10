@@ -384,6 +384,7 @@ abstract class Client
 
         $body = (object) [
             'data' => (object) [
+                'id'   => $id,
                 'type' => static::$type
             ]
         ];
@@ -608,8 +609,9 @@ abstract class Client
                     );
                 }
                 break;
+            case self::METHOD_PATCH: //On METHOD_PUT
             case self::METHOD_PUT: //On METHOD_PUT
-                curl_setopt($handle, CURLOPT_CUSTOMREQUEST, self::METHOD_PUT);
+                curl_setopt($handle, CURLOPT_CUSTOMREQUEST, self::METHOD_PATCH);
                 //todo only if json
                 if ($data) {
                     curl_setopt(
@@ -623,7 +625,10 @@ abstract class Client
                 curl_setopt($handle, CURLOPT_CUSTOMREQUEST, self::METHOD_DELETE);
                 break;
             default:
-                throw new \Exception('Unsupported method');
+                throw new \Exception(sprintf(
+                    'Unsupported method "%s"',
+                    $method
+                ));
         }
         
         //Get response
@@ -673,6 +678,8 @@ abstract class Client
 
     /**
      * @param string|null $API
+     * @deprecated
+     * wont work correctly 
      */
     public static function setAPI(string $API = null)
     {
