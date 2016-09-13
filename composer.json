@@ -17,7 +17,9 @@
   "require": {
     "php": ">=7",
     "phramework/util": "^0.0.0",
-    "phramework/jsonapi": "1.0.0-RC9"
+    "phramework/jsonapi": "*",
+    "guzzlehttp/guzzle": "~6.0",
+    "phramework/operator": "*"
   },
   "require-dev": {
     "squizlabs/php_codesniffer": "*",

@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * Copyright 2016 Xenofon Spafaridis
  *
@@ -35,8 +37,9 @@ class ResponseException extends \Exception
     public function __construct(Errors $response)
     {
         $this->response = $response;
-    }
 
+        parent::__construct('Response exception');
+    }
 
     /**
      * @return Errors
@@ -44,16 +47,5 @@ class ResponseException extends \Exception
     public function getResponse()
     {
         return $this->response;
-    }
-
-    /**
-     * @param Errors $response
-     * @return $this
-     */
-    public function setResponse($response)
-    {
-        $this->response = $response;
-
-        return $this;
     }
 }

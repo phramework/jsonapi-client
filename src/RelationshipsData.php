@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * Copyright 2016 Xenofon Spafaridis
  *
@@ -76,7 +78,7 @@ class RelationshipsData
      * Get relationships object
      * @return \stdClass
      */
-    public function getRelationships()
+    public function getRelationships() : \stdClass
     {
         return $this->relationships;
     }

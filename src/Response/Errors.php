@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * Copyright 2016 Xenofon Spafaridis
  *
@@ -28,5 +30,13 @@ class Errors extends Response
     /**
      * @var Error[]
      */
-    public $errors;
+    protected $errors;
+
+    /**
+     * @return \Phramework\JSONAPI\Client\Error[]
+     */
+    public function getErrors(): array
+    {
+        return $this->errors;
+    }
 }

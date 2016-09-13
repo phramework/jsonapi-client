@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * Copyright 2016 Xenofon Spafaridis
  *
@@ -15,22 +17,3 @@
  * limitations under the License.
  */
 require __DIR__ . '/../vendor/autoload.php';
-
-\Phramework\JSONAPI\Client\Client::setGlobalAPI(
-    ''
-);
-
-\Phramework\JSONAPI\Client\Client::setGlobalHeader(
-    \Phramework\Models\Request::HEADER_CONTENT_TYPE,
-    'application/vnd.api+json'
-);
-
-\Phramework\JSONAPI\Client\Client::setGlobalHeader(
-    \Phramework\Models\Request::HEADER_ACCEPT,
-    'application/vnd.api+json'
-);
-
-\Phramework\JSONAPI\Client\Client::setGlobalHeader(
-    'Authorization',
-    ''
-);

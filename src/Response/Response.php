@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * Copyright 2016 Xenofon Spafaridis
  *
@@ -16,6 +18,8 @@
  */
 namespace Phramework\JSONAPI\Client\Response;
 
+use Psr\Http\Message\ResponseInterface;
+
 /**
  * @author Xenofon Spafaridis <nohponex@gmail.com>
  * @since 0.0.0
@@ -25,78 +29,76 @@ abstract class Response
     /**
      * @var \stdClass
      */
-    public $meta;
+    protected $meta;
     
     /**
      * @var \stdClass
      */
-    public $links;
+    protected $links;
 
     /**
-     * @var integer
+     * @var ResponseInterface
      */
-    protected $statusCode;
-
-    /**
-     * @var \stdClass
-     */
-    protected $headers;
+    protected $response;
 
     /**
      * Parse response object, will copy any top members available at this
-     * Response instance
-     * @param \stdClass $response
-     * @return $this
+     * @param ResponseInterface $response
      */
-    public function parse(\stdClass $response = null)
+    public function __construct(ResponseInterface $response)
     {
-        if ($response !== null) {
+        $this->response = $response;
+
+        $body = json_decode($response->getBody()->getContents());
+
+        if ($body) {
             
             $members = array_keys(get_object_vars($this));
 
             foreach ($members as $member) {
-                $this->{$member} = $response->{$member} ?? null;
+                if (isset($body->{$member})) {
+                    $this->{$member} = $body->{$member};
+                }
             }
         }
-
-        return $this;
     }
 
     /**
      * @return int
      */
-    public function getStatusCode()
+    public function getStatusCode() : int
     {
-        return $this->statusCode;
+        return $this->response->getStatusCode();
     }
 
     /**
-     * @param int $statusCode
-     * @return $this
+     * @return string[][]
      */
-    public function setStatusCode($statusCode)
+    public function getHeaders() : array
     {
-        $this->statusCode = $statusCode;
-
-        return $this;
+        return $this->response->getHeaders();
     }
 
     /**
      * @return \stdClass
      */
-    public function getHeaders()
+    public function getMeta(): \stdClass
     {
-        return $this->headers;
+        return $this->meta;
+    }
+    /**
+     * @return \stdClass
+     */
+    public function getLinks(): \stdClass
+    {
+        return $this->links;
     }
 
     /**
-     * @param \stdClass $headers
-     * @return $this
+     * @return ResponseInterface
      */
-    public function setHeaders($headers)
+    public function getResponse(): ResponseInterface
     {
-        $this->headers = $headers;
-
-        return $this;
+        return $this->response;
     }
 }

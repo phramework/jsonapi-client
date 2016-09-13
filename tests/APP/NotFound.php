@@ -22,8 +22,8 @@ use Phramework\JSONAPI\Client\Client;
  * @author Xenofon Spafaridis <nohponex@gmail.com>
  * @since 0.0.0
  */
-class NotFound extends Client
+/*class NotFound extends Client
 {
     protected static $endpoint = 'not_found';
     protected static $type     = 'not_found';
-}
+}*/

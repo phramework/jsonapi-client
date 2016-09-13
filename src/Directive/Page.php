@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * Copyright 2016 Xenofon Spafaridis
  *
@@ -14,18 +16,38 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Phramework\JSONAPI\Client;
+namespace Phramework\JSONAPI\Client\Directive;
 
 /**
  * @author Xenofon Spafaridis <nohponex@gmail.com>
  * @since 0.0.0
  */
-class Page extends \Phramework\JSONAPI\Page
+class Page extends Directive
 {
+    /**
+     * @var int
+     */
+    protected $offset;
+
+    /**
+     * @var int|null
+     */
+    protected $limit;
+
+    /**
+     * @param int $limit
+     * @param int $offset
+     */
+    public function __construct($limit = null, $offset = 0)
+    {
+        $this->limit = $limit;
+        $this->offset = $offset;
+    }
+
     /**
      * @return string
      */
-    public function toURL(): string
+    public function getURL(): string
     {
         $parts = [];
 
@@ -45,10 +67,25 @@ class Page extends \Phramework\JSONAPI\Page
             );
         }
 
-
         return implode(
             '&',
             $parts
         );
+    }
+
+    /**
+     * @return int
+     */
+    public function getOffset(): int
+    {
+        return $this->offset;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getLimit()
+    {
+        return $this->limit;
     }
 }

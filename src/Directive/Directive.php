@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * Copyright 2016 Xenofon Spafaridis
  *
@@ -14,29 +16,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Phramework\JSONAPI\Client;
+namespace Phramework\JSONAPI\Client\Directive;
 
 /**
+ * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
  * @author Xenofon Spafaridis <nohponex@gmail.com>
- * @coversDefaultClass \Phramework\JSONAPI\Client\Sort
+ * @since 1.0.0
  */
-class SortTest extends \PHPUnit_Framework_TestCase
+abstract class Directive
 {
     /**
-     * @covers ::toURL
+     * @return string
      */
-    public function testToURL()
-    {
-        $this->assertSame(
-            'sort=created',
-            (new Sort(null, 'created'))
-                ->toURL()
-        );
+    public function getURL(): string {
+        return '';
+    }
 
-        $this->assertSame(
-            'sort=-created',
-            (new Sort(null, 'created', false))
-                ->toURL()
-        );
+    /**
+     * @return \stdClass
+     */
+    public function getHeaders(): \stdClass
+    {
+        return new \stdClass();
     }
 }

@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * Copyright 2016 Xenofon Spafaridis
  *
@@ -14,35 +16,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Phramework\JSONAPI\Client;
+namespace Phramework\JSONAPI\Client\Directive;
 
 /**
  * @author Xenofon Spafaridis <nohponex@gmail.com>
- * @since 0.0.0
+ * @coversDefaultClass \Phramework\JSONAPI\Client\Directive\Sort
  */
-class IncludeRelationship
+class SortTest extends \PHPUnit_Framework_TestCase
 {
-    protected $types;
-
-    public function __construct(string ...$types)
-    {
-        $this->types = $types;
-    }
-
     /**
-     * @return string
+     * @covers ::getURL
      */
-    public function toURL(): string
+    public function testToURL()
     {
-        return sprintf(
-            'include=%s',
-            implode(
-                ',',
-                array_map(
-                    'urlencode',
-                    $this->types
-                )
-            )
+        $this->assertSame(
+            'sort=created',
+            (new Sort('created'))
+                ->getURL()
+        );
+
+        $this->assertSame(
+            'sort=-created',
+            (new Sort('created', false))
+                ->getURL()
         );
     }
 }
