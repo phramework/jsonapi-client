@@ -20,7 +20,11 @@ namespace Phramework\JSONAPI\Client;
 
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
+use GuzzleHttp\Exception\BadResponseException;
 use Phramework\JSONAPI\Client\Directive\Directive;
+use Phramework\JSONAPI\Client\Endpoint\Get;
+use Phramework\JSONAPI\Client\Endpoint\GetById;
+use Phramework\JSONAPI\Client\Endpoint\Post;
 use Phramework\JSONAPI\Client\Exceptions\ResponseException;
 use Phramework\JSONAPI\Client\Response\Collection;
 use Phramework\JSONAPI\Client\Response\Errors;
@@ -33,6 +37,10 @@ use Phramework\JSONAPI\Client\Response\JSONAPIResource;
  */
 class Endpoint
 {
+    use Get;
+    use GetById;
+    use Post;
+
     /**
      * @var string
      */
@@ -151,194 +159,5 @@ class Endpoint
         unset($this->headers->{$header});
 
         return $this;
-    }
-
-    /**
-     * @param Directive[] ...$directives
-     * @return Collection
-     */
-    public function get(
-        Directive ...$directives
-    ) : Collection {
-        $url = $this->url;
-
-        $questionMark = false;
-
-        foreach ($directives as $directive) {
-            $urlParsed = $directive->getURL();
-
-            if (empty($urlParsed)) {
-                continue;
-            }
-
-            $url = $url . ($questionMark ? '&' : '?') . $urlParsed;
-            $questionMark = true;
-        }
-
-        $client = new \GuzzleHttp\Client([]);
-
-        $request = (new Request(Client::METHOD_GET, $url));
-
-        //Add headers
-        foreach ($this->headers as $header => $values) {
-            $request = $request->withAddedHeader(
-                $header,
-                $values
-            );
-        }
-
-        $response = $client->send($request);
-
-        $responseStatusCode = $response->getStatusCode();
-
-        if (!in_array($responseStatusCode, [200])) {
-            throw new ResponseException(
-                (new Errors($response))
-            );
-        }
-
-        return (new Collection($response));
-    }
-
-    /**
-     * @param string                $id
-     * @param Directive[] ...$directives
-     * @return JSONAPIResource
-     * @throws ResponseException
-     * @todo prevent //
-     */
-    public function getById(
-        string $id,
-        Directive ...$directives
-    ) : JSONAPIResource {
-
-        $url = $this->url . $id . '/';
-
-        $questionMark = false;
-
-        foreach ($directives as $directive) {
-            $urlParsed = $directive->getURL();
-
-            if (empty($urlParsed)) {
-                continue;
-            }
-
-            $url = $url . ($questionMark ? '&' : '?') . $urlParsed;
-            $questionMark = true;
-        }
-
-        $client = new \GuzzleHttp\Client([]);
-
-        $request = (new Request(Client::METHOD_GET, $url));
-
-        //Add headers
-        foreach ($this->headers as $header => $values) {
-            $request = $request->withAddedHeader(
-                $header,
-                $values
-            );
-        }
-
-        $response = $client->send($request);
-
-        $responseStatusCode = $response->getStatusCode();
-
-        if (!in_array($responseStatusCode, [200])) {
-            throw new ResponseException(
-                (new Errors($response))
-            );
-        }
-
-        return (new JSONAPIResource($response));
-    }
-
-    /**
-     * @param \stdClass         $attributes
-     * @param RelationshipsData $relationships
-     * @param Directive[]  ...$directives
-     * @return JSONAPIResource
-     * @throws ResponseException
-     */
-    public function post(
-        \stdClass $attributes = null,
-        RelationshipsData  $relationships = null,
-        Directive ...$directives
-    ) {
-        $url = $this->url;
-
-        $questionMark = false;
-
-        foreach ($directives as $directive) {
-            $urlParsed = $directive->getURL();
-
-            if (empty($urlParsed)) {
-                continue;
-            }
-
-            $url = $url . ($questionMark ? '&' : '?') . $urlParsed;
-            $questionMark = true;
-        }
-
-        //prepare request body
-
-        $body = (object) [
-            'data' => (object) [
-                'type' => $this->type
-            ]
-        ];
-
-        if ($attributes !== null) {
-            $body->data->attributes = $attributes;
-        }
-
-        if ($relationships !== null) {
-            $body->data->relationships = $relationships->getRelationships();
-        }
-
-        $client = new \GuzzleHttp\Client([]);
-
-        $request = (new Request(
-            Client::METHOD_POST,
-            $url,
-            [],
-            json_encode($body)
-        ));
-
-        //Add headers
-        foreach ($this->headers as $header => $values) {
-            $request = $request->withAddedHeader(
-                $header,
-                $values
-            );
-        }
-
-        $response = $client->send($request);
-
-        $responseStatusCode = $response->getStatusCode();
-
-        if (!in_array($responseStatusCode, [200, 201, 202, 204])) {
-            throw new ResponseException(
-                (new Errors($response))
-            );
-        }
-
-        return (new JSONAPIResource($response));
-    }
-
-    /**
-     * @param \stdClass         $attributes
-     * @param RelationshipsData $relationships
-     * @param Directive[]  ...$directives
-     * @return JSONAPIResource
-     * @throws ResponseException
-     * @todo
-     */
-    public function patch(
-        string $id,
-        \stdClass $attributes = null,
-        RelationshipsData  $relationships = null,
-        Directive ...$directives
-    ) {
-
     }
 }

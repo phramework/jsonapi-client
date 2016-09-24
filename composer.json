@@ -17,13 +17,16 @@
   "require": {
     "php": ">=7",
     "phramework/util": "^0.0.0",
-    "phramework/jsonapi": "*",
+    "phramework/jsonapi": "3.x",
     "guzzlehttp/guzzle": "~6.0",
     "phramework/operator": "*"
   },
   "require-dev": {
     "squizlabs/php_codesniffer": "*",
-    "phpunit/phpunit": "5.*"
+    "phpunit/phpunit": "5.*",
+    "slim/slim": "^3.0",
+    "ext-pdo_sqlite": "*",
+    "oscarotero/psr7-middlewares": "^3.16"
   },
   "minimum-stability": "dev",
   "prefer-stable": true,
@@ -34,10 +37,14 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "Phramework\\JSONAPI\\Client\\APP\\": "tests/APP"
+      "Phramework\\JSONAPI\\APP\\": "tests/APP"
     }
   },
   "scripts": {
+    "run": [
+      "echo \"\nStarting web server at http://localhost:8005 ...\n\"",
+      "php -S localhost:8005 -t tests/APP/public/&"
+    ],
     "test": [
       "find src/ -name '*.php' -print0 | xargs -0 -L 1 php -l",
       "find tests/ -name '*.php' -print0 | xargs -0 -L 1 php -l",

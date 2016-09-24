@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Copyright 2016 Xenofon Spafaridis
  *
@@ -14,16 +15,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Phramework\JSONAPI\Client\APP;
 
-use Phramework\JSONAPI\Client\Client;
+$settings = (object) [
+    'debug' => true,
+    'db' => (object) [
+        'adapter' => 'sqlite',
+        'file'    => __DIR__ . '/schema/example.sqlite'
+    ]
+];
 
-/**
- * @author Xenofon Spafaridis <nohponex@gmail.com>
- * @since 0.0.0
- */
-/*class NotFound extends Client
-{
-    protected static $endpoint = 'not_found';
-    protected static $type     = 'not_found';
-}*/
+return $settings;

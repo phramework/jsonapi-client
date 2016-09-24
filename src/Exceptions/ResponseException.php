@@ -1,7 +1,6 @@
 <?php
 declare(strict_types=1);
-
-/**
+/*
  * Copyright 2016 Xenofon Spafaridis
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,6 +17,7 @@ declare(strict_types=1);
  */
 namespace Phramework\JSONAPI\Client\Exceptions;
 
+use Phramework\JSONAPI\Client\Error;
 use Phramework\JSONAPI\Client\Response\Errors;
 
 /**
@@ -29,23 +29,23 @@ class ResponseException extends \Exception
     /**
      * @var Errors
      */
-    private $response;
+    private $errors;
 
     /**
-     * @param Errors $response
+     * @param Errors $errors
      */
-    public function __construct(Errors $response)
+    public function __construct(Errors $errors)
     {
-        $this->response = $response;
+        $this->errors = $errors;
 
         parent::__construct('Response exception');
     }
 
     /**
-     * @return Errors
+     * @return Error[]
      */
-    public function getResponse()
+    public function getErrors()
     {
-        return $this->response;
+        return $this->errors->getErrors();
     }
 }

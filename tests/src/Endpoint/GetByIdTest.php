@@ -17,7 +17,35 @@ declare(strict_types=1);
  */
 namespace Phramework\JSONAPI\Client;
 
+require_once __DIR__ . '/BaseEndpoint.php';
+
 use Phramework\JSONAPI\Client\Directive\IncludeRelationship;
 use Phramework\JSONAPI\Client\Directive\Page;
 use Phramework\JSONAPI\Client\Exceptions\ResponseException;
 use Phramework\JSONAPI\Client\Response\JSONAPIResource;
+
+/**
+ * @author Xenofon Spafaridis <nohponex@gmail.com>
+ * @coversDefaultClass \Phramework\JSONAPI\Client\Endpoint
+ * @todo use phramework/jsonapi to server an actual API
+ */
+class GetByIdTest extends \PHPUnit_Framework_TestCase
+{
+    use BaseEndpoint;
+
+    /**
+     * @param string $id
+     * @covers ::getById
+     */
+    public function testGeyById()
+    {
+        $id = $this->get();
+
+        $r = $this->endpoint->getById($id);
+
+        $this->assertSame(
+            $this->resourceType,
+            $r->getData()->type
+        );
+    }
+}

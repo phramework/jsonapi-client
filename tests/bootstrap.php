@@ -1,6 +1,5 @@
 <?php
 declare(strict_types=1);
-
 /**
  * Copyright 2016 Xenofon Spafaridis
  *
@@ -17,3 +16,13 @@ declare(strict_types=1);
  * limitations under the License.
  */
 require __DIR__ . '/../vendor/autoload.php';
+
+//Include settings
+$settings = include __DIR__ . '/settings.php';
+/*
+$adapter = new \Phramework\Database\SQLite($settings->db);
+
+//Set global adapter
+\Phramework\Database\Database::setAdapter(
+    $adapter
+);*/
