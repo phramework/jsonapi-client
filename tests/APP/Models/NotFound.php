@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Copyright 2016 Xenofon Spafaridis
  *
@@ -14,16 +15,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Phramework\JSONAPI\Client\APP;
-
+namespace Phramework\JSONAPI\APP\Models;
 use Phramework\JSONAPI\Client\Client;
 
 /**
  * @author Xenofon Spafaridis <nohponex@gmail.com>
  * @since 0.0.0
  */
-/*class User extends Client
+/*class NotFound extends Client
 {
-    protected static $endpoint = 'user';
-    protected static $type     = 'user';
+    protected static $endpoint = 'not_found';
+    protected static $type     = 'not_found';
 }*/

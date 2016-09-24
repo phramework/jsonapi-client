@@ -17,3 +17,45 @@ declare(strict_types=1);
  * limitations under the License.
  */
 require __DIR__ . '/../vendor/autoload.php';
+require __DIR__ . '/../vendor/phramework/jsonapi/tests/APP/DataSource/MemoryDataSource.php';
+
+use Phramework\JSONAPI\APP\DataSource\MemoryDataSource;
+
+/**
+ * group
+ */
+MemoryDataSource::addTable('group');
+MemoryDataSource::insert(
+    'group',
+    (object) [
+        'id'   => '1',
+        'name' => 'Members'
+    ]
+);
+
+MemoryDataSource::insert(
+    'group',
+    (object) [
+        'id'   => '2',
+        'name' => 'Administrators'
+    ]
+);
+
+/**
+ * tag
+ */
+MemoryDataSource::addTable('tag');
+MemoryDataSource::insert(
+    'tag',
+    (object) [
+        'id'   => '1',
+        'name' => 'A tag'
+    ]
+);
+MemoryDataSource::insert(
+    'tag',
+    (object) [
+        'id'   => '2',
+        'name' => 'Another tag'
+    ]
+);

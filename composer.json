@@ -17,13 +17,14 @@
   "require": {
     "php": ">=7",
     "phramework/util": "^0.0.0",
-    "phramework/jsonapi": "*",
+    "phramework/jsonapi": "3.x",
     "guzzlehttp/guzzle": "~6.0",
     "phramework/operator": "*"
   },
   "require-dev": {
     "squizlabs/php_codesniffer": "*",
-    "phpunit/phpunit": "5.*"
+    "phpunit/phpunit": "5.*",
+    "slim/slim": "^3.0"
   },
   "minimum-stability": "dev",
   "prefer-stable": true,
@@ -34,7 +35,7 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "Phramework\\JSONAPI\\Client\\APP\\": "tests/APP"
+      "Phramework\\JSONAPI\\APP\\": "tests/APP"
     }
   },
   "scripts": {
