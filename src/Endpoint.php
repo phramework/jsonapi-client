@@ -20,6 +20,7 @@ namespace Phramework\JSONAPI\Client;
 
 use GuzzleHttp\Psr7\Request;
 use GuzzleHttp\Psr7\Response;
+use GuzzleHttp\Exception\BadResponseException;
 use Phramework\JSONAPI\Client\Directive\Directive;
 use Phramework\JSONAPI\Client\Exceptions\ResponseException;
 use Phramework\JSONAPI\Client\Response\Collection;
@@ -239,7 +240,14 @@ class Endpoint
             );
         }
 
-        $response = $client->send($request);
+        try {
+            $response = $client->send($request);
+
+        } catch (BadResponseException $exception) {
+            throw new ResponseException(
+                (new Errors($exception->getResponse()))
+            );
+        }
 
         $responseStatusCode = $response->getStatusCode();
 

@@ -1,6 +1,5 @@
 <?php
 declare(strict_types=1);
-
 /**
  * Copyright 2016 Xenofon Spafaridis
  *
@@ -32,18 +31,17 @@ class EndpointTest extends \PHPUnit_Framework_TestCase
 {
     protected $resourceType;
 
+    /**
+     * @var Endpoint
+     */
     protected $endpoint;
 
     public function setUp()
     {
-        $this->resourceType = 'sherpa_task';
+        $this->resourceType = 'article';
 
         $this->endpoint = (new Endpoint($this->resourceType))
-            ->setUrl('http://localhost/' . $this->resourceType) //todo
-            ->withAddedHeader(
-                'Authorization',
-                'Basic abcd=' //todo
-            );
+            ->setUrl('http://localhost:8005/' . $this->resourceType);
     }
 
     /**
@@ -53,7 +51,7 @@ class EndpointTest extends \PHPUnit_Framework_TestCase
     public function testGet()
     {
         $collection = $this->endpoint->get(
-            new IncludeRelationship('member'),
+            new IncludeRelationship('author'),
             new Page(2)
         );
 
@@ -117,7 +115,28 @@ class EndpointTest extends \PHPUnit_Framework_TestCase
         $resource = $this->endpoint->getById($id);
 
         $this->markTestIncomplete();
+    }
 
+    /**
+     * @covers ::get
+     */
+    public function testGetNotFoundResourceDetails()
+    {
+        $id = (string) 2**31; //Very large resource id, probably is going to missing
+
+        try {
+            $resource = $this->endpoint->getById($id);
+        } catch (ResponseException $e) {
+            $this->assertSame(
+                'Resource not found',
+                $e->getErrors()[0]->title
+            );
+
+            $this->assertSame(
+                '404',
+                $e->getErrors()[0]->status
+            );
+        }
     }
 
     /**
@@ -142,24 +161,30 @@ class EndpointTest extends \PHPUnit_Framework_TestCase
     {
         $post = $this->endpoint->post(
             (object) [
-                'title' => 'do this',
-            ],
+                'title' => 'do this from phpunit',
+                'body' => 'do this from phpunit - body',
+            ]/*,
             (new RelationshipsData())
                 ->append(
-                    'member',
-                    '5',
-                    'user'
+                    'tag',
+                    '1'
                 )
                 ->append(
-                    'category',
-                    '27976',
-                    'sherpa_service_category'
-                )
+                    'tag',
+                    '2'
+                )*/
         );
+
+        $this->markTestIncomplete();
 
         $this->assertInstanceOf(
             JSONAPIResource::class,
             $post
+        );
+
+        $this->assertSame(
+            204,
+            $post->getStatusCode()
         );
     }
 }

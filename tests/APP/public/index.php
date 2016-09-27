@@ -1,10 +1,18 @@
 <?php
 declare(strict_types=1);
 
-require __DIR__ . '/../../bootstrap.php';
-
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\ResponseInterface;
+use Psr7Middlewares\Middleware\TrailingSlash;
+
+require __DIR__ . '/../../bootstrap.php';
+
+$adapter = new \Phramework\Database\SQLite($settings->db);
+
+//Set global adapter
+\Phramework\Database\Database::setAdapter(
+    $adapter
+);
 
 class Ctrl
 {
@@ -17,35 +25,55 @@ $c = new \Slim\Container();
 $c['errorHandler'] = function ($c) {
     return function ($request, $response, \Exception $exception) use ($c) {
         switch (get_class($exception)) {
+            case \Phramework\Exceptions\NotFoundException::class:
+                return $c['errors']->withStatus($exception->getCode())
+                    ->withHeader('Content-Type', 'application/json')
+                    ->write(json_encode((object) [
+                        'errors' => [(object) [
+                            'title'   => $exception->getMessage(),
+                            'details' => $exception->getMessage(),
+                            'status'  => (string) $exception->getCode(),
+                        ]]
+                    ]));
             case \Phramework\Exceptions\MissingParametersException::class:
-                return $c['response']->withStatus($exception->getCode())
+                return $c['errors']->withStatus($exception->getCode())
                     ->withHeader('Content-Type', 'application/json')
                     //->write($exception->getMessage())
                     ->write(json_encode((object) [
-                        'parameters' => $exception->getParameters(),
-                        'source' => $exception->getSource()
+                        'errors' => [(object) [
+                            'meta'     => (object) [
+                                'parameters' => $exception->getParameters(),
+                            ], //todo
+                            'source'  => $exception->getSource(),
+                            'title'   => $exception->getMessage(),
+                            'details' => $exception->getMessage(),
+                            'status'  => (string) $exception->getCode(),
+                        ]]
                     ]));
             case \Phramework\Exceptions\IncorrectParameterException::class:
-                return $c['response']->withStatus($exception->getCode())
+                return $c['errors']->withStatus($exception->getCode())
                     ->withHeader('Content-Type', 'application/json')
                     //->write($exception->getMessage())
                     ->write(json_encode((object) [
                         'errors' => [(object) [
                             'failure' => $exception->getFailure(),
                             'source'  => $exception->getSource(),
-                            'detail'  => $exception->getDetail()
+                            'detail'  => $exception->getDetail(),
+                            'title'   => $exception->getMessage(),
+                            'status'  => (string) $exception->getCode(),
                         ]]
                     ]));
             case \Phramework\Exceptions\IncorrectParametersException::class:
-                return $c['response']->withStatus($exception->getCode())
+                return $c['errors']->withStatus($exception->getCode())
                     ->withHeader('Content-Type', 'application/json')
                     //->write($exception->getMessage())
                     ->write(json_encode((object) [
+                        //todo
                         'exceptions' => $exception->getExceptions()
                     ]));
             case \Exception::class:
             default:
-                return $c['response']->withStatus(400)
+                return $c['errors']->withStatus(400)
                     ->withHeader('Content-Type', 'application')
                     //->write($exception->getMessage())
                     ->write($exception);
@@ -55,33 +83,35 @@ $c['errorHandler'] = function ($c) {
 
 $app = new \Slim\App($c);
 
-$app->get('/group', function (ServerRequestInterface $request, ResponseInterface $response) {
+$app->add(new TrailingSlash(true)); // true adds the trailing slash (false removes it)
+
+$app->get('/article/', function (ServerRequestInterface $request, ResponseInterface $response) {
     return Ctrl::handleGet(
         $request,
         $response,
-        \Phramework\JSONAPI\APP\Models\Group::getResourceModel()
+        \Phramework\JSONAPI\APP\Models\Article::getResourceModel()
     );
 });
 
-$app->get('/group/{id}', function (ServerRequestInterface $request, ResponseInterface $response) {
+$app->get('/article/{id}/', function (ServerRequestInterface $request, ResponseInterface $response) {
     return Ctrl::handleGetById(
         $request,
         $response,
-        \Phramework\JSONAPI\APP\Models\Group::getResourceModel(),
+        \Phramework\JSONAPI\APP\Models\Article::getResourceModel(),
         [],
         $request->getAttribute('id')
     );
 });
 
-$app->post('/group', function (ServerRequestInterface $request, ResponseInterface $response) {
+$app->post('/article/', function (ServerRequestInterface $request, ResponseInterface $response) {
     return Ctrl::handlePost(
         $request,
         $response,
-        \Phramework\JSONAPI\APP\Models\Group::getResourceModel()
+        \Phramework\JSONAPI\APP\Models\Article::getResourceModel()
     );
 });
 
-$app->get('/tag', function (ServerRequestInterface $request, ResponseInterface $response) {
+$app->get('/tag/', function (ServerRequestInterface $request, ResponseInterface $response) {
     return Ctrl::handleGet(
         $request,
         $response,
@@ -89,7 +119,7 @@ $app->get('/tag', function (ServerRequestInterface $request, ResponseInterface $
     );
 });
 
-$app->get('/tag/{id}', function (ServerRequestInterface $request, ResponseInterface $response) {
+$app->get('/tag/{id}/', function (ServerRequestInterface $request, ResponseInterface $response) {
     return Ctrl::handleGetById(
         $request,
         $response,
@@ -99,7 +129,7 @@ $app->get('/tag/{id}', function (ServerRequestInterface $request, ResponseInterf
     );
 });
 
-$app->post('/tag', function (ServerRequestInterface $request, ResponseInterface $response) {
+$app->post('/tag/', function (ServerRequestInterface $request, ResponseInterface $response) {
     return Ctrl::handlePost(
         $request,
         $response,
@@ -107,7 +137,7 @@ $app->post('/tag', function (ServerRequestInterface $request, ResponseInterface 
     );
 });
 
-$app->get('/user', function (ServerRequestInterface $request, ResponseInterface $response) {
+$app->get('/user/', function (ServerRequestInterface $request, ResponseInterface $response) {
     return Ctrl::handleGet(
         $request,
         $response,
@@ -115,7 +145,7 @@ $app->get('/user', function (ServerRequestInterface $request, ResponseInterface 
     );
 });
 
-$app->get('/user/{id}', function (ServerRequestInterface $request, ResponseInterface $response) {
+$app->get('/user/{id}/', function (ServerRequestInterface $request, ResponseInterface $response) {
     return Ctrl::handleGetById(
         $request,
         $response,
@@ -125,7 +155,7 @@ $app->get('/user/{id}', function (ServerRequestInterface $request, ResponseInter
     );
 });
 
-$app->post('/user', function (ServerRequestInterface $request, ResponseInterface $response) {
+$app->post('/user/', function (ServerRequestInterface $request, ResponseInterface $response) {
     return Ctrl::handlePost(
         $request,
         $response,

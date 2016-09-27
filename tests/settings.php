@@ -15,14 +15,13 @@ declare(strict_types=1);
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-require __DIR__ . '/../vendor/autoload.php';
 
-//Include settings
-$settings = include __DIR__ . '/settings.php';
-/*
-$adapter = new \Phramework\Database\SQLite($settings->db);
+$settings = (object) [
+    'debug' => true,
+    'db' => (object) [
+        'adapter' => 'sqlite',
+        'file'    => __DIR__ . '/schema/example.sqlite'
+    ]
+];
 
-//Set global adapter
-\Phramework\Database\Database::setAdapter(
-    $adapter
-);*/
+return $settings;

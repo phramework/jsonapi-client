@@ -17,15 +17,18 @@ declare(strict_types=1);
  */
 namespace Phramework\JSONAPI\APP\Models;
 
+use Phramework\Database\Database;
 use Phramework\JSONAPI\APP\DataSource\MemoryDataSource;
 use Phramework\JSONAPI\Client\Client;
 use Phramework\JSONAPI\Client\Directive\Directive;
 use Phramework\JSONAPI\Model;
 use Phramework\JSONAPI\ModelTrait;
+use Phramework\JSONAPI\Relationship;
 use Phramework\JSONAPI\ResourceModel;
 use Phramework\JSONAPI\ValidationModel;
 use Phramework\Validate\ObjectValidator;
 use Phramework\Validate\StringValidator;
+use Phramework\Validate\UnsignedIntegerValidator;
 
 /**
  * @author Xenofon Spafaridis <nohponex@gmail.com>
@@ -37,8 +40,15 @@ class Tag extends Model
 
     protected static function defineModel() : ResourceModel
     {
-        return (new ResourceModel('tag', new MemoryDataSource()))
+        return (new ResourceModel('tag'))
             ->addVariable('table', 'tag')
+            ->setIdAttributeValidator(
+                new StringValidator(
+                    1,
+                    128,
+                    '/^\d+$/'
+                )
+            )
             ->setSortableAttributes(
                 'id'
             )
@@ -46,14 +56,38 @@ class Tag extends Model
                 new ValidationModel(
                     new ObjectValidator(
                         (object) [
-                            'name' => new StringValidator()
+                            'title'  => new StringValidator(),
+                            'status' => (new UnsignedIntegerValidator(0, 1))
+                            ->setDefault(1)
                         ],
-                        [],
+                        ['title'],
                         false
                     )
                 ),
                 'POST'
-            );
+            )->setRelationships((object) [
+                //https://github.com/phramework/jsonapi/issues/45
+                /*'article' => new Relationship(
+                    Article::getResourceModel(),
+                    Relationship::TYPE_TO_MANY,
+                    null,
+                    (object) [
+                        'GET' => function (string $tagId) {
+                            $ids = Database::executeAndFetchAllArray(
+                                'SELECT "article-tag"."article_id"
+                                FROM "article-tag"
+                                JOIN "article"
+                                 ON "article"."id" = "article-tag"."article_id"
+                                WHERE "article-tag"."tag_id" = ?
+                                  AND "article-tag"."status" <> 0
+                                  AND "article"."status" <> 0',
+                                [$tagId]
+                            );
+                            return $ids;
+                        }
+                    ]
+                )*/
+            ]);
     }
 
 }

@@ -37,36 +37,12 @@ class User extends Model
 
     protected static function defineModel() : ResourceModel
     {
-        return (new ResourceModel('user', new MemoryDataSource()))
+        return (new ResourceModel('user'))
             ->addVariable('table', 'user')
             ->setSortableAttributes(
                 'id'
-            )->setValidationModel(
-                new ValidationModel(
-                    new ObjectValidator(
-                        (object) [
-                            'name' => new StringValidator()
-                        ],
-                        [],
-                        false
-                    )
-                ),
-                'POST'
-            )->setRelationships(
-                (object) [
-                    'group' => new Relationship(
-                        Group::getResourceModel(),
-                        Relationship::TYPE_TO_ONE,
-                        'group_id'
-                    ),
-                    'tag' => new Relationship(
-                        Tag::getResourceModel(),
-                        Relationship::TYPE_TO_MANY,
-                        'tag_id'
-                    )
-                ]
             )->setFieldableAtributes(
-                'email',
+                'name',
                 'username'
             );
     }

@@ -42,7 +42,7 @@ abstract class Response
     protected $response;
 
     /**
-     * Parse response object, will copy any top members available at this
+     * Parse errors object, will copy any top members available at this
      * @param ResponseInterface $response
      */
     public function __construct(ResponseInterface $response)
