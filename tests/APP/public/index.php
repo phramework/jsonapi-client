@@ -18,12 +18,30 @@ $c['errorHandler'] = function ($c) {
     return function ($request, $response, \Exception $exception) use ($c) {
         switch (get_class($exception)) {
             case \Phramework\Exceptions\MissingParametersException::class:
-                return $c['response']->withStatus(500)
+                return $c['response']->withStatus($exception->getCode())
                     ->withHeader('Content-Type', 'application/json')
                     //->write($exception->getMessage())
                     ->write(json_encode((object) [
                         'parameters' => $exception->getParameters(),
                         'source' => $exception->getSource()
+                    ]));
+            case \Phramework\Exceptions\IncorrectParameterException::class:
+                return $c['response']->withStatus($exception->getCode())
+                    ->withHeader('Content-Type', 'application/json')
+                    //->write($exception->getMessage())
+                    ->write(json_encode((object) [
+                        'errors' => [(object) [
+                            'failure' => $exception->getFailure(),
+                            'source'  => $exception->getSource(),
+                            'detail'  => $exception->getDetail()
+                        ]]
+                    ]));
+            case \Phramework\Exceptions\IncorrectParametersException::class:
+                return $c['response']->withStatus($exception->getCode())
+                    ->withHeader('Content-Type', 'application/json')
+                    //->write($exception->getMessage())
+                    ->write(json_encode((object) [
+                        'exceptions' => $exception->getExceptions()
                     ]));
             case \Exception::class:
             default:
@@ -60,6 +78,58 @@ $app->post('/group', function (ServerRequestInterface $request, ResponseInterfac
         $request,
         $response,
         \Phramework\JSONAPI\APP\Models\Group::getResourceModel()
+    );
+});
+
+$app->get('/tag', function (ServerRequestInterface $request, ResponseInterface $response) {
+    return Ctrl::handleGet(
+        $request,
+        $response,
+        \Phramework\JSONAPI\APP\Models\Tag::getResourceModel()
+    );
+});
+
+$app->get('/tag/{id}', function (ServerRequestInterface $request, ResponseInterface $response) {
+    return Ctrl::handleGetById(
+        $request,
+        $response,
+        \Phramework\JSONAPI\APP\Models\Tag::getResourceModel(),
+        [],
+        $request->getAttribute('id')
+    );
+});
+
+$app->post('/tag', function (ServerRequestInterface $request, ResponseInterface $response) {
+    return Ctrl::handlePost(
+        $request,
+        $response,
+        \Phramework\JSONAPI\APP\Models\Tag::getResourceModel()
+    );
+});
+
+$app->get('/user', function (ServerRequestInterface $request, ResponseInterface $response) {
+    return Ctrl::handleGet(
+        $request,
+        $response,
+        \Phramework\JSONAPI\APP\Models\User::getResourceModel()
+    );
+});
+
+$app->get('/user/{id}', function (ServerRequestInterface $request, ResponseInterface $response) {
+    return Ctrl::handleGetById(
+        $request,
+        $response,
+        \Phramework\JSONAPI\APP\Models\User::getResourceModel(),
+        [],
+        $request->getAttribute('id')
+    );
+});
+
+$app->post('/user', function (ServerRequestInterface $request, ResponseInterface $response) {
+    return Ctrl::handlePost(
+        $request,
+        $response,
+        \Phramework\JSONAPI\APP\Models\User::getResourceModel()
     );
 });
 

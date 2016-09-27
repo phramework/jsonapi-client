@@ -59,3 +59,38 @@ MemoryDataSource::insert(
         'name' => 'Another tag'
     ]
 );
+
+/**
+ * user
+ */
+MemoryDataSource::addTable('user');
+MemoryDataSource::insert(
+    'user',
+    (object) [
+        'id'       => '1',
+        'username' => 'nohponex',
+        'email'    => 'nohponex@gmail.com',
+        'group_id' => '1',
+        'tag_id'   => ['1', '2']
+    ]
+);
+MemoryDataSource::insert(
+    'user',
+    (object) [
+        'id'       => '2',
+        'username' => 'nohponex2',
+        'email'    => 'nohponex+2@gmail.com',
+        'group_id' => '2',
+        'tag_id'   => []
+    ]
+);
+MemoryDataSource::insert(
+    'user',
+    (object) [
+        'id'       => '3',
+        'username' => 'nohponex3',
+        'email'    => 'nohponex+3@gmail.com',
+        'group_id' => '2',
+        'tag_id'   => ['2']
+    ]
+);
