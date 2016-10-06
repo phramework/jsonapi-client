@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * Copyright 2016 Xenofon Spafaridis
  *
@@ -14,23 +16,61 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Phramework\JSONAPI\Client;
+namespace Phramework\JSONAPI\Client\Directive;
 
 /**
  * @author Xenofon Spafaridis <nohponex@gmail.com>
  * @since 0.0.0
  */
-class Sort extends \Phramework\JSONAPI\Sort
+class Sort extends Directive
 {
+    /**
+     * @var bool
+     */
+    protected $ascending;
+
+    /**
+     * @var string
+     */
+    protected $attribute;
+
+    /**
+     * @param string $attribute
+     * @param bool $ascending
+     */
+    public function __construct(
+        string $attribute,
+        bool $ascending = true
+    ) {
+        $this->attribute = $attribute;
+        $this->ascending = $ascending;
+    }
+
     /**
      * @return string
      */
-    public function toURL(): string
+    public function getURL(): string
     {
         return sprintf(
             'sort=%s%s',
             ($this->ascending ? '' : '-'),
             $this->attribute
         );
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getAscending(): bool
+    {
+        return $this->ascending;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAttribute(): string
+    {
+        return $this->attribute;
     }
 }

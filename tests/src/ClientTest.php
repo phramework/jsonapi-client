@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Copyright 2016 Xenofon Spafaridis
  *
@@ -16,12 +17,8 @@
  */
 namespace Phramework\JSONAPI\Client;
 
-use Phramework\JSONAPI\Client\APP\NotFound;
-use Phramework\JSONAPI\Client\APP\User;
 use Phramework\JSONAPI\Client\Exceptions\ResponseException;
 use Phramework\JSONAPI\Client\Response\Errors;
-use Phramework\JSONAPI\FilterAttribute;
-use Phramework\Models\Operator;
 
 /**
  * @author Xenofon Spafaridis <nohponex@gmail.com>
@@ -29,105 +26,4 @@ use Phramework\Models\Operator;
  */
 class ClientTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * @covers ::get
-     */
-    public function testGet()
-    {
-        $users = User::get(
-            new Page(1, 10)
-        );
-            /*new Filter(
-                [1, 2, 3],
-                null,
-                [
-                    new FilterAttribute('language', Operator::OPERATOR_EQUAL, 'en')
-                ]
-            ),
-            new Sort(null, 'created', false),
-            new Fields((object) [
-                'user' => ['name', 'email']
-            ]),
-            new IncludeRelationship('project', 'group')
-        );*/
-
-        $userId = $users->data[0]->id;
-
-        //var_dump($users);
-
-        return $userId;
-    }
-
-    /**
-     * @covers ::get
-     */
-    public function testGetResponseException()
-    {
-        try {
-
-            NotFound::get();
-        } catch (ResponseException $e) {
-            $response = $e->getResponse();
-
-            $this->assertInstanceOf(
-                Errors::class,
-                $response
-            );
-
-            $this->assertCount(
-                1,
-                $response->errors
-            );
-
-            $this->assertSame(
-                404,
-                $response->errors[0]->status
-            );
-
-            var_dump($response->errors);
-        }
-    }
-
-    /**
-     * @param string $userId
-     * @covers ::get
-     * @depends  testGet
-     */
-    public function testGetById($userId)
-    {
-        $user = User::getById(
-            $userId
-        );
-
-        //var_dump($user);
-    }
-
-    public function testPost()
-    {
-        $response = User::post(
-            (object)[
-                'username' => 'phramework',
-                'email' => 'phramework@phramework.ph'
-            ],
-            (new RelationshipsData())
-                ->append('group', '29')
-        );
-
-        /*(object)[
-                'measurement_template' => (object) [
-                    'data' => (object) [
-                        'type' => 'measurement_template',
-                        'id' => '29'
-                    ]
-                ],
-                'device' => (object) [
-                    'data' => (object) [
-                        'type' => 'device',
-                        'id' => '1'
-                    ]
-                ]
-            ]*/
-
-        var_dump($response);
-    }
 }

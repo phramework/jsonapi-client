@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Copyright 2016 Xenofon Spafaridis
  *
@@ -14,29 +15,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Phramework\JSONAPI\Client;
 
-/**
- * @author Xenofon Spafaridis <nohponex@gmail.com>
- * @coversDefaultClass \Phramework\JSONAPI\Client\Sort
- */
-class SortTest extends \PHPUnit_Framework_TestCase
-{
-    /**
-     * @covers ::toURL
-     */
-    public function testToURL()
-    {
-        $this->assertSame(
-            'sort=created',
-            (new Sort(null, 'created'))
-                ->toURL()
-        );
+$settings = (object) [
+    'debug' => true,
+    'db' => (object) [
+        'adapter' => 'sqlite',
+        'file'    => __DIR__ . '/schema/example.sqlite'
+    ]
+];
 
-        $this->assertSame(
-            'sort=-created',
-            (new Sort(null, 'created', false))
-                ->toURL()
-        );
-    }
-}
+return $settings;

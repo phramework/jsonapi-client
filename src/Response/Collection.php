@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * Copyright 2016 Xenofon Spafaridis
  *
@@ -22,19 +24,63 @@ use Phramework\JSONAPI\Client\ResourceObject;
  * @author Xenofon Spafaridis <nohponex@gmail.com>
  * @since 0.0.0
  */
-class Collection extends Response
+class Collection extends Response implements \ArrayAccess
 {
     /**
      * An array of resource objects, an array of resource identifier objects,
      * or an empty array
      * @var ResourceObject[]
      */
-    public $data = [];
+    protected $data = [];
 
     /**
      * Compound Documents
      * @var ResourceObject[]
      * @link http://jsonapi.org/format/#document-compound-documents
      */
-    public $included;
+    protected $included;
+
+    /**
+     * @return \Phramework\JSONAPI\Client\ResourceObject[]
+     */
+    public function getData(): array
+    {
+        return $this->data;
+    }
+
+    /**
+     * @return \Phramework\JSONAPI\Client\ResourceObject[]
+     */
+    public function getIncluded(): array
+    {
+        return $this->included;
+    }
+
+    public function offsetSet($offset, $value)
+    {
+        if (is_null($offset)) {
+            $this->data[] = $value;
+        } else {
+            $this->data[$offset] = $value;
+        }
+    }
+
+    public function offsetExists($offset)
+    {
+        return isset($this->data[$offset]);
+    }
+
+    public function offsetUnset($offset)
+    {
+        unset($this->data[$offset]);
+    }
+
+    /**
+     * @param mixed $offset
+     * @return ResourceObject|null
+     */
+    public function offsetGet($offset)
+    {
+        return isset($this->data[$offset]) ? $this->data[$offset] : null;
+    }
 }

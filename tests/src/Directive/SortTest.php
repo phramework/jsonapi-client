@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * Copyright 2016 Xenofon Spafaridis
  *
@@ -14,16 +16,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Phramework\JSONAPI\Client\APP;
-
-use Phramework\JSONAPI\Client\Client;
+namespace Phramework\JSONAPI\Client\Directive;
 
 /**
  * @author Xenofon Spafaridis <nohponex@gmail.com>
- * @since 0.0.0
+ * @coversDefaultClass \Phramework\JSONAPI\Client\Directive\Sort
  */
-class User extends Client
+class SortTest extends \PHPUnit_Framework_TestCase
 {
-    protected static $endpoint = 'user';
-    protected static $type     = 'user';
+    /**
+     * @covers ::getURL
+     */
+    public function testToURL()
+    {
+        $this->assertSame(
+            'sort=created',
+            (new Sort('created'))
+                ->getURL()
+        );
+
+        $this->assertSame(
+            'sort=-created',
+            (new Sort('created', false))
+                ->getURL()
+        );
+    }
 }

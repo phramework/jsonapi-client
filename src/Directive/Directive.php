@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * Copyright 2016 Xenofon Spafaridis
  *
@@ -14,35 +16,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Phramework\JSONAPI\Client;
+namespace Phramework\JSONAPI\Client\Directive;
 
 /**
+ * @license https://www.apache.org/licenses/LICENSE-2.0 Apache-2.0
  * @author Xenofon Spafaridis <nohponex@gmail.com>
- * @coversDefaultClass \Phramework\JSONAPI\Client\Page
+ * @since 1.0.0
  */
-class PageTest extends \PHPUnit_Framework_TestCase
+abstract class Directive
 {
     /**
-     * @covers ::toURL
+     * @return string
      */
-    public function testToURL()
+    public function getURL(): string {
+        return '';
+    }
+
+    /**
+     * @return \stdClass
+     */
+    public function getHeaders(): \stdClass
     {
-        $this->assertSame(
-            'page[limit]=10',
-            (new Page(10))
-                ->toURL()
-        );
-
-        $this->assertSame(
-            'page[offset]=10',
-            (new Page(null, 10))
-                ->toURL()
-        );
-
-        $this->assertSame(
-            'page[limit]=3&page[offset]=2',
-            (new Page(3, 2))
-                ->toURL()
-        );
+        return new \stdClass();
     }
 }

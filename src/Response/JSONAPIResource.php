@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * Copyright 2016 Xenofon Spafaridis
  *
@@ -22,20 +24,50 @@ use Phramework\JSONAPI\Client\ResourceObject;
  * @author Xenofon Spafaridis <nohponex@gmail.com>
  * @since 0.0.0
  * @link http://jsonapi.org/format/#document-resource-objects
+ * @property-read string $id
+ * @property-read string $type
+ * @property-read \stdClass $attributes
+ * @property-read \stdClass $relationships
  */
-class Resource extends Response
+class JSONAPIResource extends Response
 {
-
     /**
      * A single resource object, a single resource identifier object, or null
      * @var ResourceObject
      */
-    public $data = null;
+    protected $data = null;
 
     /**
      * Compound Documents
      * @var ResourceObject[]
      * @link http://jsonapi.org/format/#document-compound-documents
      */
-    public $included;
+    protected $included;
+
+    /**
+     * @return ResourceObject
+     */
+    public function getData()
+    {
+        return $this->data;
+    }
+
+    /**
+     * @return \Phramework\JSONAPI\Client\ResourceObject[]
+     */
+    public function getIncluded(): array
+    {
+        return $this->included;
+    }
+
+    public function __get($name)
+    {
+        $members = array_keys(get_object_vars($this));
+
+        if (!in_array($name, $members) && isset($this->data->{$name})) {
+            return $this->data->{$name};
+        }
+
+        throw new \Exception('Invalid property ' . $name);
+    }
 }

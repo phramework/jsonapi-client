@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * Copyright 2016 Xenofon Spafaridis
  *
@@ -14,16 +16,35 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Phramework\JSONAPI\Client\APP;
-
-use Phramework\JSONAPI\Client\Client;
+namespace Phramework\JSONAPI\Client\Directive;
 
 /**
  * @author Xenofon Spafaridis <nohponex@gmail.com>
- * @since 0.0.0
+ * @coversDefaultClass \Phramework\JSONAPI\Client\Directive\Page
  */
-class NotFound extends Client
+class PageTest extends \PHPUnit_Framework_TestCase
 {
-    protected static $endpoint = 'not_found';
-    protected static $type     = 'not_found';
+    /**
+     * @covers ::getURL
+     */
+    public function testToURL()
+    {
+        $this->assertSame(
+            'page[limit]=10',
+            (new Page(10))
+                ->getURL()
+        );
+
+        $this->assertSame(
+            'page[offset]=10',
+            (new Page(null, 10))
+                ->getURL()
+        );
+
+        $this->assertSame(
+            'page[limit]=3&page[offset]=2',
+            (new Page(3, 2))
+                ->getURL()
+        );
+    }
 }

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Copyright 2016 Xenofon Spafaridis
  *
@@ -17,7 +18,7 @@
 namespace Phramework\JSONAPI\Client;
 
 /**
- * Error meta-class helpful for documentation and autocomplete
+ * Error meta-class helpful for documentation and auto-complete
  * @author Xenofon Spafaridis <nohponex@gmail.com>
  * @since 0.0.0
  * @link http://jsonapi.org/format/#error-objects

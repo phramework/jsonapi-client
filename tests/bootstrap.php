@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Copyright 2016 Xenofon Spafaridis
  *
@@ -16,21 +17,12 @@
  */
 require __DIR__ . '/../vendor/autoload.php';
 
-\Phramework\JSONAPI\Client\Client::setGlobalAPI(
-    ''
-);
+//Include settings
+$settings = include __DIR__ . '/settings.php';
+/*
+$adapter = new \Phramework\Database\SQLite($settings->db);
 
-\Phramework\JSONAPI\Client\Client::setGlobalHeader(
-    \Phramework\Models\Request::HEADER_CONTENT_TYPE,
-    'application/vnd.api+json'
-);
-
-\Phramework\JSONAPI\Client\Client::setGlobalHeader(
-    \Phramework\Models\Request::HEADER_ACCEPT,
-    'application/vnd.api+json'
-);
-
-\Phramework\JSONAPI\Client\Client::setGlobalHeader(
-    'Authorization',
-    ''
-);
+//Set global adapter
+\Phramework\Database\Database::setAdapter(
+    $adapter
+);*/

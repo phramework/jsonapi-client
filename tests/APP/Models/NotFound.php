@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Copyright 2016 Xenofon Spafaridis
  *
@@ -14,39 +15,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Phramework\JSONAPI\Client;
+namespace Phramework\JSONAPI\APP\Models;
+use Phramework\JSONAPI\Client\Client;
 
 /**
  * @author Xenofon Spafaridis <nohponex@gmail.com>
  * @since 0.0.0
  */
-class Fields extends \Phramework\JSONAPI\Fields
+/*class NotFound extends Client
 {
-    /**
-     * @return string
-     */
-    public function toURL(): string
-    {
-        $parts = [];
-
-        foreach ($this->fields as $key => $value) {
-            $parts[] = sprintf(
-                'fields[%s]=%s',
-                $key,
-                implode(
-                    ',',
-                    array_map(
-                        'urlencode',
-                        $value
-                    )
-                )
-            );
-        }
-
-
-        return implode(
-            '&',
-            $parts
-        );
-    }
-}
+    protected static $endpoint = 'not_found';
+    protected static $type     = 'not_found';
+}*/

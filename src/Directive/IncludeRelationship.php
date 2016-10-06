@@ -1,4 +1,6 @@
 <?php
+declare(strict_types=1);
+
 /**
  * Copyright 2016 Xenofon Spafaridis
  *
@@ -14,14 +16,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-namespace Phramework\JSONAPI\Client;
+namespace Phramework\JSONAPI\Client\Directive;
 
 /**
  * @author Xenofon Spafaridis <nohponex@gmail.com>
  * @since 0.0.0
  */
-class IncludeRelationship
+class IncludeRelationship extends Directive
 {
+    /**
+     * @var string[]
+     */
     protected $types;
 
     public function __construct(string ...$types)
@@ -32,7 +37,7 @@ class IncludeRelationship
     /**
      * @return string
      */
-    public function toURL(): string
+    public function getURL(): string
     {
         return sprintf(
             'include=%s',
@@ -44,5 +49,13 @@ class IncludeRelationship
                 )
             )
         );
+    }
+
+    /**
+     * @return \string[]
+     */
+    public function getTypes(): array
+    {
+        return $this->types;
     }
 }

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * Copyright 2016 Xenofon Spafaridis
  *
@@ -31,7 +32,8 @@ class RelationshipsDataTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals(
             new \stdClass(),
-            $relationshipData->getRelationships()
+            $relationshipData->getRelationships(),
+            'Expect empty object'
         );
     }
 
