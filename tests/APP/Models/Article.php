@@ -69,10 +69,9 @@ class Article extends Model
                 new ValidationModel(
                     new ObjectValidator(
                         (object) [
-                            'title' => new StringValidator(),
-                            'body'  => new StringValidator(),
-                            'status' => (new UnsignedIntegerValidator(0, 1))
-                                ->setDefault(1)
+                            'title'  => new StringValidator(),
+                            'body'   => new StringValidator(),
+                            'status' => new UnsignedIntegerValidator(0, 1)
                         ],
                         [],
                         false
@@ -90,12 +89,16 @@ class Article extends Model
             ->setRelationships(
                 (object) [
                     'author' => new Relationship(
-                        User::getResourceModel(),
+                        function () {
+                            return User::getResourceModel();
+                        },
                         Relationship::TYPE_TO_ONE,
                         'creator-user_id'
                     ),
                     'tag' => new Relationship(
-                        Tag::getResourceModel(),
+                        function () {
+                            return Tag::getResourceModel();
+                        },
                         Relationship::TYPE_TO_MANY,
                         null,//'tag_id'
                         (object) [

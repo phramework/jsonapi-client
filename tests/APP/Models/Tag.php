@@ -66,9 +66,10 @@ class Tag extends Model
                 ),
                 'POST'
             )->setRelationships((object) [
-                //https://github.com/phramework/jsonapi/issues/45
-                /*'article' => new Relationship(
-                    Article::getResourceModel(),
+                'article' => new Relationship(
+                    function () {
+                        return Article::getResourceModel();
+                    },
                     Relationship::TYPE_TO_MANY,
                     null,
                     (object) [
@@ -86,7 +87,7 @@ class Tag extends Model
                             return $ids;
                         }
                     ]
-                )*/
+                )
             ]);
     }
 
