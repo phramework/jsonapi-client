@@ -31,6 +31,7 @@ trait Get
     /**
      * @param Directive[] ...$directives
      * @return Collection
+     * @throws ResponseException
      */
     public function get(
         Directive ...$directives

@@ -56,6 +56,7 @@ trait Post
     }
 
     /**
+     * @param string            $id Resource id
      * @param \stdClass         $attributes
      * @param RelationshipsData $relationships
      * @param Directive[]  ...$directives
@@ -63,7 +64,7 @@ trait Post
      * @throws ResponseException
      */
     public function patch(
-        $id,
+        string $id,
         \stdClass $attributes = null,
         RelationshipsData  $relationships = null,
         Directive ...$directives
@@ -85,7 +86,7 @@ trait Post
      * @throws ResponseException
      */
     public function put(
-        $id,
+        string $id,
         \stdClass $attributes = null,
         RelationshipsData  $relationships = null,
         Directive ...$directives
@@ -107,7 +108,7 @@ trait Post
      * @throws ResponseException
      */
     public function delete(
-        $id,
+        string $id,
         \stdClass $attributes = null,
         RelationshipsData  $relationships = null,
         Directive ...$directives

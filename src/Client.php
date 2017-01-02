@@ -26,6 +26,7 @@ use Phramework\JSONAPI\Client\Response\JSONAPIResource;
 
 /**
  * @author Xenofon Spafaridis <nohponex@gmail.com>
+ * @version 2.0.0
  * @since 0.0.0
  * @todo handle errors
  * @todo add post batch
@@ -41,15 +42,15 @@ abstract class Client
     const METHOD_PUT    = 'PUT';
 
     /**
-     * @var Endpoint
+     * @var AbstractEndpoint
      */
     protected static $endpoint;
 
     /**
      * @see Model::defineModel Will be invoked if $model is not defined
-     * @return Endpoint
+     * @return AbstractEndpoint
      */
-    public static function getEndpoint() : Endpoint
+    public static function getEndpoint() : AbstractEndpoint
     {
         if (static::$endpoint === null) {
             static::$endpoint = static::define();
@@ -62,12 +63,13 @@ abstract class Client
      * MUST be implemented
      * This method is used to define the endpoint
      */
-    abstract protected static function define() : Endpoint;
+    abstract protected static function define() : AbstractEndpoint;
 
     /**
      * Alias of ResourceModel's getById, used as shortcut
      * @param Directive[] ...$directives
      * @return Collection
+     * @throws ResponseException
      */
     public static function get(Directive ...$directives) : Collection
     {
@@ -79,6 +81,7 @@ abstract class Client
      * @param string       $id
      * @param Directive[] ...$directives
      * @return JSONAPIResource
+     * @throws ResponseException
      */
     public static function getById(
         string $id,
@@ -95,5 +98,31 @@ abstract class Client
         return static::getEndpoint()->post(...func_get_args());
     }
 
+    /**
+     * @param string       $id
+     * @param Directive[] ...$directives
+     * @throws ResponseException
+     */
+    public static function patch(
+        string $id,
+        \stdClass $attributes = null,
+        RelationshipsData  $relationships = null,
+        Directive ...$directives
+    ) {
+        return static::getEndpoint()->patch(...func_get_args());
+    }
 
+    /**
+     * @param string       $id
+     * @param Directive[] ...$directives
+     * @throws ResponseException
+     */
+    public static function delete(
+        string $id,
+        \stdClass $attributes = null,
+        RelationshipsData  $relationships = null,
+        Directive ...$directives
+    ) {
+        return static::getEndpoint()->delete(...func_get_args());
+    }
 }

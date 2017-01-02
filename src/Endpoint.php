@@ -35,7 +35,7 @@ use Phramework\JSONAPI\Client\Response\JSONAPIResource;
  * @author Xenofon Spafaridis <nohponex@gmail.com>
  * @since 3.0.0
  */
-class Endpoint
+class Endpoint extends AbstractEndpoint
 {
     use Get;
     use GetById;
