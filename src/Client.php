@@ -1,8 +1,7 @@
 <?php
 declare(strict_types=1);
-
-/**
- * Copyright 2016 Xenofon Spafaridis
+/*
+ * Copyright 2016-2017 Xenofon Spafaridis
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,7 +29,6 @@ use Phramework\JSONAPI\Client\Response\JSONAPIResource;
  * @since 0.0.0
  * @todo handle errors
  * @todo add post batch
- * @todo authorization manager per endpoint
  */
 abstract class Client
 {
