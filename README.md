@@ -1,28 +1,37 @@
 # jsonapi-client
-JSONAPI client, helps creating SDK to consume your JSON API services
+JSONAPI client, helps creating SDK to consume your JSON RESTful APIs
 
 ## Usage
 Require package using composer
-
 ```bash
 composer require phramework/jsonapi-client
 ```
-## Development
-### Install
 
-```bash
-composer update
-```
+### GET a collection
 
-### Lint and test code
+```php
+<?php
+/**
+ * Define an API endpoint
+ */
+$endpoint = (new Endpoint('article'))
+    ->setUrl('http://localhost:8005/article/');
 
-```bash
-composer lint
-composer test
+/**
+ * Get a collection of all `article`s, including their author
+ */
+$response = $endpoint->get(
+    new IncludeRelationship('author')
+);
+
+/*
+ * Display article collection
+ */
+print_r($articles = $response->getData());
 ```
 
 ## License
-Copyright 2016 Xenofon Spafaridis
+Copyright 2016-2017 Xenofon Spafaridis
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
 
