@@ -18,6 +18,7 @@ declare(strict_types=1);
 namespace Phramework\JSONAPI\Client\Response;
 
 use Phramework\JSONAPI\Client\Error;
+use Psr\Http\Message\ResponseInterface;
 
 /**
  * @author Xenofon Spafaridis <nohponex@gmail.com>
@@ -30,6 +31,13 @@ class Errors extends Response
      * @var Error[]
      */
     protected $errors;
+
+    public function __construct(ResponseInterface $response)
+    {
+        $this->errors = [];
+
+        parent::__construct($response);
+    }
 
     /**
      * @return \Phramework\JSONAPI\Client\Error[]
