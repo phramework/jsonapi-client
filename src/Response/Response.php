@@ -51,7 +51,6 @@ abstract class Response
         $body = json_decode($response->getBody()->getContents());
 
         if ($body) {
-            
             $members = array_keys(get_object_vars($this));
 
             foreach ($members as $member) {

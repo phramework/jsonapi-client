@@ -27,7 +27,8 @@ abstract class Directive
     /**
      * @return string
      */
-    public function getURL(): string {
+    public function getURL(): string
+    {
         return '';
     }
 

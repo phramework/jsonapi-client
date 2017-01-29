@@ -36,9 +36,18 @@ class ResponseException extends \Exception
      */
     public function __construct(Errors $errors)
     {
-        $this->errors = $errors;
+        $title = 'Response exception';
 
-        parent::__construct('Response exception');
+        if (isset(
+            $errors->getErrors()[0],
+            $errors->getErrors()[0]->title
+        )) {
+            $title = $errors->getErrors()[0]->title;
+        }
+
+        parent::__construct($title);
+
+        $this->errors = $errors;
     }
 
     /**

@@ -17,8 +17,7 @@ declare(strict_types=1);
  */
 namespace Phramework\JSONAPI\Client;
 
-require_once __DIR__ . '/BaseEndpoint.php';
-
+use Phramework\JSONAPI\APP\BaseEndpoint;
 use Phramework\JSONAPI\Client\Directive\IncludeRelationship;
 use Phramework\JSONAPI\Client\Directive\Page;
 use Phramework\JSONAPI\Client\Exceptions\ResponseException;

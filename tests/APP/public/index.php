@@ -22,11 +22,12 @@ class Ctrl
 }
 
 $c = new \Slim\Container();
+
 $c['errorHandler'] = function ($c) {
     return function ($request, $response, \Exception $exception) use ($c) {
         switch (get_class($exception)) {
             case \Phramework\Exceptions\NotFoundException::class:
-                return $c['errors']->withStatus($exception->getCode())
+                return $c['response']->withStatus($exception->getCode())
                     ->withHeader('Content-Type', 'application/json')
                     ->write(json_encode((object) [
                         'errors' => [(object) [
@@ -36,7 +37,7 @@ $c['errorHandler'] = function ($c) {
                         ]]
                     ]));
             case \Phramework\Exceptions\MissingParametersException::class:
-                return $c['errors']->withStatus($exception->getCode())
+                return $c['response']->withStatus($exception->getCode())
                     ->withHeader('Content-Type', 'application/json')
                     //->write($exception->getMessage())
                     ->write(json_encode((object) [
@@ -51,7 +52,7 @@ $c['errorHandler'] = function ($c) {
                         ]]
                     ]));
             case \Phramework\Exceptions\IncorrectParameterException::class:
-                return $c['errors']->withStatus($exception->getCode())
+                return $c['response']->withStatus($exception->getCode())
                     ->withHeader('Content-Type', 'application/json')
                     //->write($exception->getMessage())
                     ->write(json_encode((object) [
@@ -64,7 +65,7 @@ $c['errorHandler'] = function ($c) {
                         ]]
                     ]));
             case \Phramework\Exceptions\IncorrectParametersException::class:
-                return $c['errors']->withStatus($exception->getCode())
+                return $c['response']->withStatus($exception->getCode())
                     ->withHeader('Content-Type', 'application/json')
                     //->write($exception->getMessage())
                     ->write(json_encode((object) [
@@ -73,7 +74,7 @@ $c['errorHandler'] = function ($c) {
                     ]));
             case \Exception::class:
             default:
-                return $c['errors']->withStatus(400)
+                return $c['response']->withStatus(400)
                     ->withHeader('Content-Type', 'application')
                     //->write($exception->getMessage())
                     ->write($exception);

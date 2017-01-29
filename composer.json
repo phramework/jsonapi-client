@@ -23,10 +23,12 @@
   },
   "require-dev": {
     "squizlabs/php_codesniffer": "*",
+    "satooshi/php-coveralls": "^1.0",
     "phpunit/phpunit": "5.*",
     "slim/slim": "^3.0",
     "ext-pdo_sqlite": "*",
-    "oscarotero/psr7-middlewares": "^3.16"
+    "oscarotero/psr7-middlewares": "^3.16",
+    "codacy/coverage": "^1.0"
   },
   "minimum-stability": "dev",
   "prefer-stable": true,

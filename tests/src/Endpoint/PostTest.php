@@ -17,11 +17,7 @@ declare(strict_types=1);
  */
 namespace Phramework\JSONAPI\Client;
 
-require_once __DIR__ . '/BaseEndpoint.php';
-
-use Phramework\JSONAPI\Client\Directive\IncludeRelationship;
-use Phramework\JSONAPI\Client\Directive\Page;
-use Phramework\JSONAPI\Client\Exceptions\ResponseException;
+use Phramework\JSONAPI\APP\BaseEndpoint;
 use Phramework\JSONAPI\Client\Response\JSONAPIResource;
 
 /**
@@ -40,17 +36,8 @@ class PostTest extends \PHPUnit_Framework_TestCase
         $post = $this->endpoint->post(
             (object) [
                 'title' => 'do this from phpunit',
-                'body' => 'do this from phpunit - body',
-            ]/*,
-            (new RelationshipsData())
-                ->append(
-                    'tag',
-                    '1'
-                )
-                ->append(
-                    'tag',
-                    '2'
-                )*/
+                'body'  => 'do this from phpunit - body',
+            ]
         );
 
         $this->markTestIncomplete();

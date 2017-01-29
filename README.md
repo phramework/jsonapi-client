@@ -1,6 +1,10 @@
 # jsonapi-client
 JSONAPI client, helps creating SDK to consume your JSON RESTful APIs
 
+[![Build Status](https://travis-ci.org/phramework/jsonapi-client.svg?branch=2.x)](https://travis-ci.org/phramework/jsonapi-client)
+
+[![Coverage Status](https://coveralls.io/repos/github/phramework/jsonapi-client/badge.svg?branch=2.x)](https://coveralls.io/github/phramework/jsonapi-client?branch=2.x)
+
 ## Usage
 Require package using composer
 ```bash
