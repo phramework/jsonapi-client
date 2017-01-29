@@ -16,8 +16,3 @@ declare(strict_types=1);
  * limitations under the License.
  */
 namespace Phramework\JSONAPI\Client;
-
-use Phramework\JSONAPI\Client\Directive\IncludeRelationship;
-use Phramework\JSONAPI\Client\Directive\Page;
-use Phramework\JSONAPI\Client\Exceptions\ResponseException;
-use Phramework\JSONAPI\Client\Response\JSONAPIResource;

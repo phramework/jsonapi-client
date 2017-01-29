@@ -1,5 +1,5 @@
 <?php
-namespace Phramework\JSONAPI\Client;
+declare(strict_types=1);
 /*
  * Copyright 2016-2017 Xenofon Spafaridis
  *
@@ -15,6 +15,8 @@ namespace Phramework\JSONAPI\Client;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+namespace Phramework\JSONAPI\Client;
+
 use Phramework\JSONAPI\Client\Directive\Directive;
 use Phramework\JSONAPI\Client\Exceptions\ResponseException;
 use Phramework\JSONAPI\Client\Response\Collection;
@@ -30,7 +32,7 @@ abstract class AbstractEndpoint
      * @return Collection
      * @throws ResponseException
      */
-    public abstract function get(
+    abstract public function get(
         Directive ...$directives
     ) : Collection;
 
@@ -40,7 +42,7 @@ abstract class AbstractEndpoint
      * @return JSONAPIResource
      * @throws ResponseException
      */
-    public abstract function getById(
+    abstract public function getById(
         string $id,
         Directive ...$directives
     ) : JSONAPIResource;
@@ -52,7 +54,7 @@ abstract class AbstractEndpoint
      * @return JSONAPIResource
      * @throws ResponseException
      */
-    public abstract function post(
+    abstract public function post(
         \stdClass $attributes = null,
         RelationshipsData  $relationships = null,
         Directive ...$directives
@@ -66,7 +68,7 @@ abstract class AbstractEndpoint
      * @return JSONAPIResource
      * @throws ResponseException
      */
-    public abstract function patch(
+    abstract public function patch(
         string $id,
         \stdClass $attributes = null,
         RelationshipsData  $relationships = null,
@@ -81,7 +83,7 @@ abstract class AbstractEndpoint
      * @return JSONAPIResource
      * @throws ResponseException
      */
-    public abstract function delete(
+    abstract public function delete(
         string $id,
         \stdClass $attributes = null,
         RelationshipsData  $relationships = null,
@@ -96,7 +98,7 @@ abstract class AbstractEndpoint
      * @return JSONAPIResource
      * @throws ResponseException
      */
-    public abstract function put(
+    abstract public function put(
         string $id,
         \stdClass $attributes = null,
         RelationshipsData  $relationships = null,

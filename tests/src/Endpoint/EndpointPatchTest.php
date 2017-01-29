@@ -17,8 +17,7 @@ declare(strict_types=1);
  */
 namespace Phramework\JSONAPI\Client;
 
-require_once __DIR__ . '/BaseEndpoint.php';
-
+use Phramework\JSONAPI\APP\BaseEndpoint;
 use Phramework\JSONAPI\Client\Response\JSONAPIResource;
 
 /**
@@ -38,16 +37,7 @@ class EndpointPatchTest extends \PHPUnit_Framework_TestCase
             (object) [
                 'title' => 'do this from phpunit',
                 'body' => 'do this from phpunit - body',
-            ]/*,
-            (new RelationshipsData())
-                ->append(
-                    'tag',
-                    '1'
-                )
-                ->append(
-                    'tag',
-                    '2'
-                )*/
+            ]
         );
 
         $this->markTestIncomplete();
