@@ -95,6 +95,17 @@ class Endpoint extends AbstractEndpoint
     }
 
     /**
+     * @param string $type
+     * @return Endpoint
+     */
+    public function setType(string $type) : Endpoint
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    /**
      * @param string $url
      * @return Endpoint
      */

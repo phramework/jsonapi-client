@@ -50,6 +50,7 @@ trait Post
             '',
             $attributes,
             $relationships,
+            null,
             ...$directives
         );
     }
@@ -73,6 +74,7 @@ trait Post
             $id . '/',
             $attributes,
             $relationships,
+            $id,
             ...$directives
         );
     }
@@ -95,6 +97,7 @@ trait Post
             $id . '/',
             $attributes,
             $relationships,
+            $id,
             ...$directives
         );
     }
@@ -117,6 +120,7 @@ trait Post
             $id . '/',
             $attributes,
             $relationships,
+            $id,
             ...$directives
         );
     }
@@ -136,6 +140,7 @@ trait Post
         string $urlSuffix = '',
         \stdClass $attributes = null,
         RelationshipsData  $relationships = null,
+        string $id = null,
         Directive ...$directives
     ) {
         $url = $this->url . $urlSuffix;
@@ -160,6 +165,10 @@ trait Post
                 'type' => $this->type
             ]
         ];
+
+        if ($id !== null) {
+            $body->data->id = $id;
+        }
 
         if ($attributes !== null) {
             $body->data->attributes = $attributes;
