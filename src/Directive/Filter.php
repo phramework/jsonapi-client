@@ -17,10 +17,10 @@ declare(strict_types=1);
  */
 namespace Phramework\JSONAPI\Client\Directive;
 
-use Phramework\JSONAPI\FilterAttribute;
-use Phramework\JSONAPI\FilterJSONAttribute;
-use Phramework\JSONAPI\Util;
-use Phramework\Models\Operator;
+use Phramework\JSONAPI\Directive\FilterAttribute;
+use Phramework\JSONAPI\Directive\FilterJSONAttribute;
+use Phramework\Operator\Operator;
+use Phramework\Util\Util;
 
 /**
  * @author Xenofon Spafaridis <nohponex@gmail.com>
@@ -97,7 +97,6 @@ class Filter extends Directive
         \stdClass $relationships = null,
         array $filterAttributes = []
     ) {
-
         $this->type = $type;
 
         if ($relationships === null) {
@@ -111,11 +110,11 @@ class Filter extends Directive
             );
         }
         foreach ($relationships as $relationshipKey => $relationshipValue) {
-            if (!is_array($relationshipValue) && $relationshipValue !== Operator::OPERATOR_EMPTY) {
+            if (!is_array($relationshipValue) && $relationshipValue !== Operator::EMPTY) {
                 throw new \InvalidArgumentException(sprintf(
                     'Values for relationship filter "%s" MUST be an array or Operator::"%s"',
                     $relationshipKey,
-                    Operator::OPERATOR_EMPTY
+                    Operator::EMPTY
                 ));
             }
         }
@@ -162,20 +161,25 @@ class Filter extends Directive
                 case FilterAttribute::class:
                     $parts[] = sprintf(
                         'filter[%s]=%s%s',
-                        urlencode($attribute->attribute),
-                        urlencode($attribute->operator),
-                        urlencode($attribute->operand)
+                        urlencode($attribute->getAttribute()),
+                        urlencode($attribute->getOperator()),
+                        urlencode($attribute->getOperand())
                     );
                     break;
                 case FilterJSONAttribute::class:
                     $parts[] = sprintf(
                         'filter[%s.%s]=%s%s',
-                        urlencode($attribute->attribute),
-                        urlencode($attribute->key),
-                        urlencode($attribute->operator),
-                        urlencode($attribute->operand)
+                        urlencode($attribute->getAttribute()),
+                        urlencode($attribute->getKey()),
+                        urlencode($attribute->getOperator()),
+                        urlencode($attribute->getOperand())
                     );
                     break;
+                default:
+                    throw new \Exception(sprintf(
+                        'Unknown filter attribute class "%s"',
+                        get_class($attribute)
+                    ));
             }
         }
 
