@@ -1,3 +1,7 @@
+# 2.2.2
+- Fix filter url when using filter attribute multiple times
+- Add unit test for FilterTest->getUrl
+
 # 2.2.1
 - Fix RelationshipsData->append behaviour with to-many relationships, to store data in jsonapi normalized specification form
 
