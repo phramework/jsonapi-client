@@ -1,3 +1,6 @@
+# 2.2.1
+- Fix RelationshipsData->append behaviour with to-many relationships, to store data in jsonapi normalized specification form
+
 ## 2.2.0
 - Fix Filter->getURL, use client filter attribute classes
 

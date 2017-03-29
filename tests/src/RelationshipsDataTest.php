@@ -49,7 +49,7 @@ class RelationshipsDataTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers ::append
      */
-    public function testAppend()
+    public function testAppendToOne()
     {
         $relationshipData = (new RelationshipsData())
             ->append('group', '20');
@@ -58,7 +58,7 @@ class RelationshipsDataTest extends \PHPUnit_Framework_TestCase
             'group' => (object) [
                 'data' => (object) [
                     'type' => 'group',
-                    'id' => 20
+                    'id'   => '20'
                 ]
             ]
         ];
@@ -72,16 +72,22 @@ class RelationshipsDataTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers ::append
      */
-    public function testAppendWithType()
+    public function testAppendToManyWithType()
     {
         $relationshipData = (new RelationshipsData())
             ->append('friend', ['20', '30'], 'user');
 
         $expected = (object) [
             'friend' => (object) [
-                'data' => (object) [
-                    'type' => 'user',
-                    'id' => [20, 30]
+                'data' => [
+                    (object) [
+                        'type' => 'user',
+                        'id' => '20'
+                    ],
+                    (object) [
+                        'type' => 'user',
+                        'id' => '30'
+                    ]
                 ]
             ]
         ];
