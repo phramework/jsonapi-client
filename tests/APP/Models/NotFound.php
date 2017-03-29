@@ -16,6 +16,7 @@ declare(strict_types=1);
  * limitations under the License.
  */
 namespace Phramework\JSONAPI\APP\Models;
+
 use Phramework\JSONAPI\Client\Client;
 
 /**

@@ -124,5 +124,4 @@ class Article extends Model
                 ]
             );
     }
-
 }

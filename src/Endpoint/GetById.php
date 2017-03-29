@@ -44,7 +44,6 @@ trait GetById
         string $id,
         Directive ...$directives
     ) : JSONAPIResource {
-
         $url = $this->url . $id . '/';
 
         $questionMark = false;

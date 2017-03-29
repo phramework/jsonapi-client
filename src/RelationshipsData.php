@@ -22,12 +22,7 @@ namespace Phramework\JSONAPI\Client;
  * POST, PATCH, PUT client requests
  * @author Xenofon Spafaridis <nohponex@gmail.com>
  * @since 0.0.0
- * @example
- * ```
- * (new RelationshipsData())
- *     ->append('group', '29') //When $relationship and type are the same
- *     ->append('friend', ['20', '30'], 'user') //When type is different
- * ```
+ * @version 2.2.1
  */
 class RelationshipsData
 {
@@ -42,6 +37,9 @@ class RelationshipsData
     }
 
     /**
+     * Append relationships,
+     * - if $relationship exist, values will be overwritten
+     * - if array of ids will be used (for to-many relationships) it in normalized based on json api specification
      * @param string           $relationship
      * @param string|string[]  $id
      * @param string|null      $type Resource type. If null, `$relationship`
@@ -63,12 +61,28 @@ class RelationshipsData
         $id,
         string $type = null
     ) {
-        $this->relationships->{$relationship} = (object) [
-            'data' => (object) [
-                'type' => $type ?? $relationship,
-                'id'   => $id
-            ]
-        ];
+        $type = $type ?? $relationship;
+
+        if (is_array($id)) {
+            $this->relationships->{$relationship} = (object) [
+                'data' => array_map(
+                    function (string $id) use ($type) {
+                        return (object) [
+                            'type' => $type,
+                            'id'   => (string) $id
+                        ];
+                    },
+                    $id
+                )
+            ];
+        } else {
+            $this->relationships->{$relationship} = (object) [
+                'data' => (object) [
+                    'type' => $type,
+                    'id'   => (string) $id
+                ]
+            ];
+        }
 
         return $this;
     }
