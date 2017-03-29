@@ -132,6 +132,8 @@ class Filter extends Directive
 
     /**
      * @return string
+     * @throws \Exception when unknown filter attribute class
+     * @version 2.2.2
      */
     public function getURL(): string
     {
@@ -160,19 +162,19 @@ class Filter extends Directive
             switch (get_class($attribute)) {
                 case FilterAttribute::class:
                     $parts[] = sprintf(
-                        'filter[%s]=%s%s',
+                        'filter[%s][]=%s%s',
                         urlencode($attribute->getAttribute()),
                         urlencode($attribute->getOperator()),
-                        urlencode($attribute->getOperand())
+                        urlencode((string) $attribute->getOperand())
                     );
                     break;
                 case FilterJSONAttribute::class:
                     $parts[] = sprintf(
-                        'filter[%s.%s]=%s%s',
+                        'filter[%s.%s][]=%s%s',
                         urlencode($attribute->getAttribute()),
                         urlencode($attribute->getKey()),
                         urlencode($attribute->getOperator()),
-                        urlencode($attribute->getOperand())
+                        urlencode((string) $attribute->getOperand())
                     );
                     break;
                 default:
