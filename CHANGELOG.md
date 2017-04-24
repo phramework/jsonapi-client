@@ -1,3 +1,6 @@
+# 2.3.0
+- Change method visibility Endpoint\Post::withPayload to protected
+
 # 2.2.2
 - Fix filter url when using filter attribute multiple times
 - Add unit test for FilterTest->getUrl

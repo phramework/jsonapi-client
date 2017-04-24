@@ -135,7 +135,7 @@ trait Post
      * @return JSONAPIResource
      * @throws ResponseException
      */
-    private function withPayload(
+    protected function withPayload(
         string $method,
         string $urlSuffix = '',
         \stdClass $attributes = null,
