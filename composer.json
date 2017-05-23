@@ -17,7 +17,6 @@
   "require": {
     "php": ">=7",
     "phramework/util": "^0.0.0",
-    "phramework/jsonapi": "3.x",
     "guzzlehttp/guzzle": "~6.0",
     "phramework/operator": "*"
   },
@@ -28,7 +27,8 @@
     "slim/slim": "^3.0",
     "ext-pdo_sqlite": "*",
     "oscarotero/psr7-middlewares": "^3.16",
-    "codacy/coverage": "^1.0"
+    "codacy/coverage": "^1.0",
+    "phramework/jsonapi": "3.x"
   },
   "minimum-stability": "dev",
   "prefer-stable": true,

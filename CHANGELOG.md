@@ -1,3 +1,6 @@
+# 2.4.0
+- Require phramework/jsonapi only as require-dev
+
 # 2.3.0
 - Change method visibility Endpoint\Post::withPayload to protected
 
