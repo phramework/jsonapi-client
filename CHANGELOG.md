@@ -1,3 +1,7 @@
+## 2.4.1
+### Fixed
+- Restore FilterAttribute and FilterJSONAttribute classes
+
 # 2.4.0
 - Require phramework/jsonapi only as require-dev
 

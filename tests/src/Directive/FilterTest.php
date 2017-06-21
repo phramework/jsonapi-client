@@ -2,13 +2,14 @@
 
 namespace Phramework\JSONAPI\Client\Directive;
 
-use Phramework\JSONAPI\Directive\FilterAttribute;
+use Phramework\JSONAPI\Client\Directive\Filter\FilterJSONAttribute;
+use Phramework\JSONAPI\Client\Directive\Filter\FilterAttribute;
 use Phramework\Operator\Operator;
 
 /**
  * @since 2.2.2
  * @author Xenofon Spafaridis <nohponex@gmail.com>
- * @coversDefaultClass \Phramework\JSONAPI\Client\Directive\Filter(
+ * @coversDefaultClass \Phramework\JSONAPI\Client\Directive\Filter
  */
 class FilterTest extends \PHPUnit_Framework_TestCase
 {
@@ -56,6 +57,27 @@ class FilterTest extends \PHPUnit_Framework_TestCase
                     'filter[author]=1,2&filter[created][]=%s100&filter[created][]=%s100000',
                     urlencode('>='),
                     urlencode('<')
+                )
+            ],
+            [
+                new Filter(
+                    '',
+                    [],
+                    (object) [
+                        'author' => ['1', '2']
+                    ],
+                    [
+                        new FilterJSONAttribute(
+                            'meta',
+                            'created',
+                            Operator::GREATER_EQUAL,
+                            100
+                        )
+                    ]
+                ),
+                sprintf(
+                    'filter[author]=1,2&filter[meta.created][]=%s100',
+                    urlencode('>=')
                 )
             ]
         ];
