@@ -17,6 +17,7 @@ declare(strict_types=1);
  */
 namespace Phramework\JSONAPI\Client;
 
+use PHPUnit\Framework\TestCase;
 use Phramework\JSONAPI\APP\BaseEndpoint;
 use Phramework\JSONAPI\Client\Response\JSONAPIResource;
 
@@ -24,7 +25,7 @@ use Phramework\JSONAPI\Client\Response\JSONAPIResource;
  * @author Xenofon Spafaridis <nohponex@gmail.com>
  * @coversDefaultClass \Phramework\JSONAPI\Client\Endpoint
  */
-class PostTest extends \PHPUnit_Framework_TestCase
+class PostTest extends TestCase
 {
     use BaseEndpoint;
 

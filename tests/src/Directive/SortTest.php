@@ -17,11 +17,13 @@ declare(strict_types=1);
  */
 namespace Phramework\JSONAPI\Client\Directive;
 
+use PHPUnit\Framework\TestCase;
+
 /**
  * @author Xenofon Spafaridis <nohponex@gmail.com>
  * @coversDefaultClass \Phramework\JSONAPI\Client\Directive\Sort
  */
-class SortTest extends \PHPUnit_Framework_TestCase
+class SortTest extends TestCase
 {
     /**
      * @covers ::getURL

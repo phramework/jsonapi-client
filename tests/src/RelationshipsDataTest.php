@@ -17,11 +17,13 @@ declare(strict_types=1);
  */
 namespace Phramework\JSONAPI\Client;
 
+use PHPUnit\Framework\TestCase;
+
 /**
  * @author Xenofon Spafaridis <nohponex@gmail.com>
  * @coversDefaultClass \Phramework\JSONAPI\Client\RelationshipsData
  */
-class RelationshipsDataTest extends \PHPUnit_Framework_TestCase
+class RelationshipsDataTest extends TestCase
 {
     /**
      * @covers ::__construct
