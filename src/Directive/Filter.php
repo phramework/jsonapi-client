@@ -17,8 +17,8 @@ declare(strict_types=1);
  */
 namespace Phramework\JSONAPI\Client\Directive;
 
-use Phramework\JSONAPI\Directive\FilterAttribute;
-use Phramework\JSONAPI\Directive\FilterJSONAttribute;
+use Phramework\JSONAPI\Client\Directive\Filter\FilterAttribute;
+use Phramework\JSONAPI\Client\Directive\Filter\FilterJSONAttribute;
 use Phramework\Operator\Operator;
 use Phramework\Util\Util;
 
@@ -150,7 +150,7 @@ class Filter extends Directive
             );
         }
 
-        foreach ($this->relationships as $key => $value) {
+        foreach (((array) $this->relationships) as $key => $value) {
             $parts[] = sprintf(
                 'filter[%s]=%s',
                 urlencode($key),
