@@ -47,6 +47,8 @@ abstract class Response
     public function __construct(ResponseInterface $response)
     {
         $this->response = $response;
+        
+        $response->getBody()->rewind();
 
         $body = json_decode($response->getBody()->getContents());
 
