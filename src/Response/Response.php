@@ -48,7 +48,9 @@ abstract class Response
     {
         $this->response = $response;
         
-        $response->getBody()->rewind();
+        if ($response->getBody()->isSeekable()) {
+            $response->getBody()->rewind();
+        }
 
         $body = json_decode($response->getBody()->getContents());
 
