@@ -38,10 +38,9 @@ class ResponseException extends \Exception
     {
         $title = 'Response exception';
 
-        if (isset(
-            $errors->getErrors()[0],
-            $errors->getErrors()[0]->title
-        )) {
+        if (isset($errors->getErrors()[0]->detail)) {
+            $title = $errors->getErrors()[0]->detail;
+        } else if (isset($errors->getErrors()[0]->title)) {
             $title = $errors->getErrors()[0]->title;
         }
 
