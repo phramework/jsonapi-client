@@ -34,7 +34,7 @@ use Phramework\JSONAPI\Client\Response\JSONAPIResource;
  * @author Xenofon Spafaridis <nohponex@gmail.com>
  * @since 3.0.0
  */
-class Endpoint extends AbstractEndpoint
+class Endpoint extends AbstractEndpointWithPostWithId
 {
     use Get;
     use GetById;
@@ -169,5 +169,10 @@ class Endpoint extends AbstractEndpoint
         unset($this->headers->{$header});
 
         return $this;
+    }
+
+    public function __clone()
+    {
+        $this->headers = clone $this->headers;
     }
 }
