@@ -1,3 +1,8 @@
+## 2.5.0
+### Added
+- AbstractEndpointWithPostWithId class
+- Post::postWithId
+
 ## 2.4.1
 ### Fixed
 - Restore FilterAttribute and FilterJSONAttribute classes

@@ -56,6 +56,30 @@ trait Post
     }
 
     /**
+     * @since 2.5.0
+     * @param \stdClass         $attributes
+     * @param RelationshipsData $relationships
+     * @param Directive[]  ...$directives
+     * @return JSONAPIResource
+     * @throws ResponseException
+     */
+    public function postWithId(
+        string $id,
+        \stdClass $attributes = null,
+        RelationshipsData  $relationships = null,
+        Directive ...$directives
+    ) {
+        return $this->withPayload(
+            Client::METHOD_POST,
+            '',
+            $attributes,
+            $relationships,
+            $id,
+            ...$directives
+        );
+    }
+
+    /**
      * @param string            $id Resource id
      * @param \stdClass         $attributes
      * @param RelationshipsData $relationships
