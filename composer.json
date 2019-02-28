@@ -23,7 +23,7 @@
   "require-dev": {
     "squizlabs/php_codesniffer": "*",
     "satooshi/php-coveralls": "^1.0",
-    "phpunit/phpunit": "5.*",
+    "phpunit/phpunit": "6.*",
     "slim/slim": "^3.0",
     "ext-pdo_sqlite": "*",
     "oscarotero/psr7-middlewares": "^3.16",

@@ -2,6 +2,7 @@
 
 namespace Phramework\JSONAPI\Client\Directive;
 
+use PHPUnit\Framework\TestCase;
 use Phramework\JSONAPI\Client\Directive\Filter\FilterJSONAttribute;
 use Phramework\JSONAPI\Client\Directive\Filter\FilterAttribute;
 use Phramework\Operator\Operator;

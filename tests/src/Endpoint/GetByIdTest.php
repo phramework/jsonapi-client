@@ -17,6 +17,7 @@ declare(strict_types=1);
  */
 namespace Phramework\JSONAPI\Client;
 
+use PHPUnit\Framework\TestCase;
 use Phramework\JSONAPI\APP\BaseEndpoint;
 use Phramework\JSONAPI\Client\Directive\IncludeRelationship;
 use Phramework\JSONAPI\Client\Directive\Page;
@@ -28,7 +29,7 @@ use Phramework\JSONAPI\Client\Response\JSONAPIResource;
  * @coversDefaultClass \Phramework\JSONAPI\Client\Endpoint
  * @todo use phramework/jsonapi to server an actual API
  */
-class GetByIdTest extends \PHPUnit_Framework_TestCase
+class GetByIdTest extends TestCase
 {
     use BaseEndpoint;
 
