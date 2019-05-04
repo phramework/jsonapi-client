@@ -12,7 +12,7 @@ use Phramework\Operator\Operator;
  * @author Xenofon Spafaridis <nohponex@gmail.com>
  * @coversDefaultClass \Phramework\JSONAPI\Client\Directive\Filter
  */
-class FilterTest extends \PHPUnit_Framework_TestCase
+class FilterTest extends TestCase
 {
     public function provider() : array
     {
