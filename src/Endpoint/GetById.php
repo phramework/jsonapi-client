@@ -73,6 +73,6 @@ trait GetById
 
         $response = $this->handleRequest($client, $request);
 
-        return new Collection($response);
+        return new JSONAPIResource($response);
     }
 }
