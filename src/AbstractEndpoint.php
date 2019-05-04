@@ -56,7 +56,7 @@ abstract class AbstractEndpoint
     /**
      * @param \stdClass         $attributes
      * @param RelationshipsData $relationships
-     * @param Directive[]  ...$directives
+     * @param Directive ...$directives
      * @return JSONAPIResource
      * @throws ResponseException
      * @throws TimeoutException
@@ -72,7 +72,7 @@ abstract class AbstractEndpoint
      * @param string            $id Resource id
      * @param \stdClass         $attributes
      * @param RelationshipsData $relationships
-     * @param Directive[]  ...$directives
+     * @param Directive ...$directives
      * @return JSONAPIResource
      * @throws ResponseException
      * @throws TimeoutException
@@ -89,7 +89,7 @@ abstract class AbstractEndpoint
      * @param string            $id Resource id
      * @param \stdClass         $attributes
      * @param RelationshipsData $relationships
-     * @param Directive[]  ...$directives
+     * @param Directive ...$directives
      * @return JSONAPIResource
      * @throws ResponseException
      * @throws TimeoutException
@@ -106,7 +106,7 @@ abstract class AbstractEndpoint
      * @param string            $id Resource id
      * @param \stdClass         $attributes
      * @param RelationshipsData $relationships
-     * @param Directive[]  ...$directives
+     * @param Directive ...$directives
      * @return JSONAPIResource
      * @throws ResponseException
      * @throws TimeoutException
