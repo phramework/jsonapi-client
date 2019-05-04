@@ -17,13 +17,11 @@ declare(strict_types=1);
  */
 namespace Phramework\JSONAPI\Client\Endpoint;
 
-use GuzzleHttp\Exception\BadResponseException;
 use GuzzleHttp\Psr7\Request;
 use Phramework\JSONAPI\Client\Client;
 use Phramework\JSONAPI\Client\Directive\Directive;
 use Phramework\JSONAPI\Client\Exceptions\ResponseException;
 use Phramework\JSONAPI\Client\RelationshipsData;
-use Phramework\JSONAPI\Client\Response\Errors;
 use Phramework\JSONAPI\Client\Response\JSONAPIResource;
 
 /**
@@ -34,11 +32,7 @@ use Phramework\JSONAPI\Client\Response\JSONAPIResource;
 trait Post
 {
     /**
-     * @param \stdClass         $attributes
-     * @param RelationshipsData $relationships
-     * @param Directive[]  ...$directives
-     * @return JSONAPIResource
-     * @throws ResponseException
+     * @inheritDoc
      */
     public function post(
         \stdClass $attributes = null,
@@ -57,11 +51,7 @@ trait Post
 
     /**
      * @since 2.5.0
-     * @param \stdClass         $attributes
-     * @param RelationshipsData $relationships
-     * @param Directive[]  ...$directives
-     * @return JSONAPIResource
-     * @throws ResponseException
+     * @inheritDoc
      */
     public function postWithId(
         string $id,
@@ -80,12 +70,7 @@ trait Post
     }
 
     /**
-     * @param string            $id Resource id
-     * @param \stdClass         $attributes
-     * @param RelationshipsData $relationships
-     * @param Directive[]  ...$directives
-     * @return JSONAPIResource
-     * @throws ResponseException
+     * @inheritDoc
      */
     public function patch(
         string $id,
@@ -104,11 +89,7 @@ trait Post
     }
 
     /**
-     * @param \stdClass         $attributes
-     * @param RelationshipsData $relationships
-     * @param Directive[]  ...$directives
-     * @return JSONAPIResource
-     * @throws ResponseException
+     * @inheritDoc
      */
     public function put(
         string $id,
@@ -127,11 +108,7 @@ trait Post
     }
 
     /**
-     * @param \stdClass         $attributes
-     * @param RelationshipsData $relationships
-     * @param Directive[]  ...$directives
-     * @return JSONAPIResource
-     * @throws ResponseException
+     * @inheritDoc
      */
     public function delete(
         string $id,
