@@ -1,5 +1,4 @@
 vendor/
-composer.lock
 nbproject/
 node_modules/
 **/settings.local.php

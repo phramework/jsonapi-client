@@ -19,14 +19,10 @@ namespace Phramework\JSONAPI\Client;
 
 use PHPUnit\Framework\TestCase;
 use Phramework\JSONAPI\APP\BaseEndpoint;
-use Phramework\JSONAPI\Client\Directive\IncludeRelationship;
-use Phramework\JSONAPI\Client\Directive\Page;
 use Phramework\JSONAPI\Client\Exceptions\ResponseException;
-use Phramework\JSONAPI\Client\Response\JSONAPIResource;
 
 /**
  * @author Xenofon Spafaridis <nohponex@gmail.com>
- * @coversDefaultClass \Phramework\JSONAPI\Client\Endpoint
  * @todo use phramework/jsonapi to server an actual API
  */
 class GetTest extends TestCase
@@ -48,16 +44,12 @@ class GetTest extends TestCase
             ->setUrl('http://localhost:8005/' . $this->resourceType);
     }
 
-    /**
-     * @covers ::get
-     */
     public function testGet()
     {
         $this->get();
     }
 
     /**
-     * @covers ::get
      * @expectedException \Exception
      */
     public function testGetNotFoundServer()
@@ -71,7 +63,6 @@ class GetTest extends TestCase
     }
 
     /**
-     * @covers ::get
      * @expectedException \Exception
      */
     public function testGetNotFoundResource()
@@ -83,9 +74,6 @@ class GetTest extends TestCase
         $this->markTestIncomplete();
     }
 
-    /**
-     * @covers ::get
-     */
     public function testGetNotFoundResourceDetails()
     {
         $id = (string) 2**31; //Very large resource id, probably is going to missing
