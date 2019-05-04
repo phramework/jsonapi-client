@@ -31,8 +31,7 @@ class ConnectTest extends TestCase
     public function testPOSTRequestWithWrongPortConnectExceptionIsThrown()
     {
         $endpoint = (new Endpoint('timeout'))
-            ->setUrl('http://localhost:9999/timeout')
-            ->withTimeout(2);
+            ->setUrl('http://localhost:9999/timeout');
 
         $endpoint->post();
     }
@@ -43,8 +42,18 @@ class ConnectTest extends TestCase
     public function testGetRequestWithWrongAddressConnectExceptionIsThrown()
     {
         $endpoint = (new Endpoint('timeout'))
-            ->setUrl('http://172.16.0.0:9999/wrongPort')
-            ->withTimeout(2);
+            ->setUrl('http://172.16.0.0:9999/wrongPort');
+
+        $endpoint->get();
+    }
+
+    /**
+     * @expectedException \Phramework\JSONAPI\Client\Exceptions\ConnectException
+     */
+    public function testGetRequestWithWrongDomainConnectExceptionIsThrown()
+    {
+        $endpoint = (new Endpoint('timeout'))
+            ->setUrl('https://wrongDomain.see/');
 
         $endpoint->get();
     }
