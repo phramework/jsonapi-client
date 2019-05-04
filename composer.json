@@ -15,7 +15,7 @@
     }
   ],
   "require": {
-    "php": ">=7",
+    "php": "^7.1",
     "phramework/util": "^0.0.0",
     "guzzlehttp/guzzle": "~6.3.3",
     "phramework/operator": "*"
@@ -23,7 +23,7 @@
   "require-dev": {
     "squizlabs/php_codesniffer": "*",
     "satooshi/php-coveralls": "^1.0",
-    "phpunit/phpunit": "6.*",
+    "phpunit/phpunit": "^7.5.9",
     "slim/slim": "^3.0",
     "ext-pdo_sqlite": "*",
     "oscarotero/psr7-middlewares": "^3.16",
