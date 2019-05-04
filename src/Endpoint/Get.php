@@ -78,7 +78,11 @@ trait Get
         } catch (\GuzzleHttp\Exception\ConnectException $exception) {
             if (isset($exception->getHandlerContext()['errno'])) {
                 switch ($exception->getHandlerContext()['errno']) {
-                    case 7:
+                    case 5: //CURLE_COULDNT_RESOLVE_PROXY
+                    case 6: //CURLE_COULDNT_RESOLVE_HOST
+                    case 7: //CURLE_COULDNT_CONNECT
+                    case 16: //CURLE_HTTP2
+                    case 35: //CURLE_SSL_CONNECT_ERROR
                         throw new ConnectException($exception);
                     case 28:
                         throw new TimeoutException($exception);
