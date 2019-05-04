@@ -18,7 +18,9 @@ declare(strict_types=1);
 namespace Phramework\JSONAPI\Client;
 
 use Phramework\JSONAPI\Client\Directive\Directive;
+use Phramework\JSONAPI\Client\Exceptions\NetworkException;
 use Phramework\JSONAPI\Client\Exceptions\ResponseException;
+use Phramework\JSONAPI\Client\Exceptions\TimeoutException;
 use Phramework\JSONAPI\Client\Response\Collection;
 use Phramework\JSONAPI\Client\Response\JSONAPIResource;
 
@@ -28,9 +30,11 @@ use Phramework\JSONAPI\Client\Response\JSONAPIResource;
 abstract class AbstractEndpoint
 {
     /**
-     * @param Directive[] ...$directives
+     * @param Directive ...$directives
      * @return Collection
      * @throws ResponseException
+     * @throws TimeoutException
+     * @throws NetworkException
      */
     abstract public function get(
         Directive ...$directives
@@ -38,9 +42,11 @@ abstract class AbstractEndpoint
 
     /**
      * @param string                $id
-     * @param Directive[] ...$directives
+     * @param Directive ...$directives
      * @return JSONAPIResource
      * @throws ResponseException
+     * @throws TimeoutException
+     * @throws NetworkException
      */
     abstract public function getById(
         string $id,
@@ -53,6 +59,8 @@ abstract class AbstractEndpoint
      * @param Directive[]  ...$directives
      * @return JSONAPIResource
      * @throws ResponseException
+     * @throws TimeoutException
+     * @throws NetworkException
      */
     abstract public function post(
         \stdClass $attributes = null,
@@ -67,6 +75,8 @@ abstract class AbstractEndpoint
      * @param Directive[]  ...$directives
      * @return JSONAPIResource
      * @throws ResponseException
+     * @throws TimeoutException
+     * @throws NetworkException
      */
     abstract public function patch(
         string $id,
@@ -82,6 +92,8 @@ abstract class AbstractEndpoint
      * @param Directive[]  ...$directives
      * @return JSONAPIResource
      * @throws ResponseException
+     * @throws TimeoutException
+     * @throws NetworkException
      */
     abstract public function delete(
         string $id,
@@ -97,6 +109,8 @@ abstract class AbstractEndpoint
      * @param Directive[]  ...$directives
      * @return JSONAPIResource
      * @throws ResponseException
+     * @throws TimeoutException
+     * @throws NetworkException
      */
     abstract public function put(
         string $id,

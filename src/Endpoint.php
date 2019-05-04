@@ -56,6 +56,12 @@ class Endpoint extends AbstractEndpointWithPostWithId
     protected $headers;
 
     /**
+     * @var int Request timeout in seconds
+     * @since 2.6.0
+     */
+    protected $timeout;
+
+    /**
      * Will initialize headers with
      * - Content-Type: application/vnd.api+json
      * - Accept: application/vnd.api+json
@@ -76,6 +82,8 @@ class Endpoint extends AbstractEndpointWithPostWithId
             'Accept',
             'application/vnd.api+json'
         );
+
+        $this->timeout = 60;
     }
 
     /**
@@ -169,6 +177,28 @@ class Endpoint extends AbstractEndpointWithPostWithId
         unset($this->headers->{$header});
 
         return $this;
+    }
+
+    /**
+     * @return int Request timeout in seconds
+     * @since 2.6.0
+     */
+    public function getTimeout(): int
+    {
+        return $this->timeout;
+    }
+
+    /**
+     * @param int $timeout
+     * @return $this
+     * @since 2.6.0
+     */
+    public function withTimeout(int $timeout): AbstractEndpointWithPostWithId
+    {
+        $clone = clone $this;
+        $clone->timeout = $timeout;
+
+        return $clone;
     }
 
     public function __clone()

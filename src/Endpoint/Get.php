@@ -21,16 +21,18 @@ use GuzzleHttp\Exception\BadResponseException;
 use GuzzleHttp\Psr7\Request;
 use Phramework\JSONAPI\Client\Client;
 use Phramework\JSONAPI\Client\Directive\Directive;
+use Phramework\JSONAPI\Client\Exceptions\ConnectException;
+use Phramework\JSONAPI\Client\Exceptions\NetworkException;
 use Phramework\JSONAPI\Client\Exceptions\ResponseException;
+use Phramework\JSONAPI\Client\Exceptions\TimeoutException;
 use Phramework\JSONAPI\Client\Response\Collection;
 use Phramework\JSONAPI\Client\Response\Errors;
+use Psr\Http\Message\ResponseInterface;
 
 trait Get
 {
     /**
-     * @param Directive[] ...$directives
-     * @return Collection
-     * @throws ResponseException
+     * @inheritDoc
      */
     public function get(
         Directive ...$directives
@@ -52,7 +54,7 @@ trait Get
 
         $client = new \GuzzleHttp\Client([]);
 
-        $request = (new Request(Client::METHOD_GET, $url));
+        $request = new Request(Client::METHOD_GET, $url);
 
         //Add headers
         foreach ($this->headers as $header => $values) {
@@ -62,14 +64,43 @@ trait Get
             );
         }
 
+        $response = $this->handleRequest($client, $request);
+
+        return new Collection($response);
+    }
+
+    protected function handleRequest(
+        $client,
+        $request
+    ): ResponseInterface {
         try {
-            $response = $client->send($request);
+            return $client->send($request, $this->getGuzzleOptions());
+        } catch (\GuzzleHttp\Exception\ConnectException $exception) {
+            if (isset($exception->getHandlerContext()['errno'])) {
+                switch ($exception->getHandlerContext()['errno']) {
+                    case 7:
+                        throw new ConnectException($exception);
+                    case 28:
+                        throw new TimeoutException($exception);
+                }
+            }
+
+            throw new NetworkException($exception);
         } catch (BadResponseException $exception) {
             throw new ResponseException(
                 (new Errors($exception->getResponse()))
             );
         }
+    }
 
-        return (new Collection($response));
+    /**
+     * @return array
+     */
+    protected function getGuzzleOptions(): array
+    {
+        $options = [
+            'timeout' => (float) $this->timeout,
+        ];
+        return $options;
     }
 }

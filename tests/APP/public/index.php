@@ -86,6 +86,17 @@ $app = new \Slim\App($c);
 
 $app->add(new TrailingSlash(true)); // true adds the trailing slash (false removes it)
 
+$app->get('/timeout/', function (ServerRequestInterface $request, ResponseInterface $response) {
+    sleep(15);
+    \Phramework\JSONAPI\Controller\Controller::viewData($response, []);
+});
+
+$app->post('/timeout/', function (ServerRequestInterface $request, ResponseInterface $response) {
+    sleep(15);
+    \Phramework\JSONAPI\Controller\Controller::viewData($response, []);
+});
+
+
 $app->get('/article/', function (ServerRequestInterface $request, ResponseInterface $response) {
     return Ctrl::handleGet(
         $request,
