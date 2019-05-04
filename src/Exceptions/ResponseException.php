@@ -40,7 +40,7 @@ class ResponseException extends \Exception
 
         if (isset($errors->getErrors()[0]->detail)) {
             $title = $errors->getErrors()[0]->detail;
-        } else if (isset($errors->getErrors()[0]->title)) {
+        } elseif (isset($errors->getErrors()[0]->title)) {
             $title = $errors->getErrors()[0]->title;
         }
 
