@@ -28,7 +28,7 @@
     "ext-pdo_sqlite": "*",
     "oscarotero/psr7-middlewares": "^3.16",
     "codacy/coverage": "^1.0",
-    "phramework/jsonapi": "3.x",
+    "phramework/jsonapi": "3.x-dev",
     "phramework/validate": "1.0.0-RC4"
   },
   "minimum-stability": "dev",
