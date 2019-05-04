@@ -1,3 +1,11 @@
+## 2.6.0
+### Added
+- ConnectException
+- NetworkException
+- TimeoutException
+- Endpoint default request timeout in 60 seconds
+- Endpoint::withTimeout
+
 ## 2.5.0
 ### Added
 - AbstractEndpointWithPostWithId class

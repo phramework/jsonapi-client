@@ -204,12 +204,12 @@ trait Post
 
         $client = new \GuzzleHttp\Client([]);
 
-        $request = (new Request(
+        $request = new Request(
             $method,
             $url,
             [],
             json_encode($body)
-        ));
+        );
 
         //Add headers
         foreach ($this->headers as $header => $values) {
@@ -219,14 +219,8 @@ trait Post
             );
         }
 
-        try {
-            $response = $client->send($request);
-        } catch (BadResponseException $exception) {
-            throw new ResponseException(
-                (new Errors($exception->getResponse()))
-            );
-        }
+        $response = $this->handleRequest($client, $request);
 
-        return (new JSONAPIResource($response));
+        return new JSONAPIResource($response);
     }
 }

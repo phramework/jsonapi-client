@@ -61,7 +61,7 @@ trait GetById
 
         $client = new \GuzzleHttp\Client([]);
 
-        $request = (new Request(Client::METHOD_GET, $url));
+        $request = new Request(Client::METHOD_GET, $url);
 
         //Add headers
         foreach ($this->headers as $header => $values) {
@@ -71,14 +71,8 @@ trait GetById
             );
         }
 
-        try {
-            $response = $client->send($request);
-        } catch (BadResponseException $exception) {
-            throw new ResponseException(
-                (new Errors($exception->getResponse()))
-            );
-        }
+        $response = $this->handleRequest($client, $request);
 
-        return (new JSONAPIResource($response));
+        return new Collection($response);
     }
 }
