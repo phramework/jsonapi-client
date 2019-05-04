@@ -18,9 +18,8 @@ class ConnectTest extends TestCase
      */
     public function testGetRequestWithWrongPortConnectExceptionIsThrown()
     {
-        $endpoint = (new Endpoint('timeout'))
-            ->setUrl('http://localhost:9999/wrongPort')
-            ->withTimeout(2);
+        $endpoint = (new Endpoint('any'))
+            ->setUrl('http://localhost:9999/wrongPort');
 
         $endpoint->get();
     }
@@ -30,7 +29,7 @@ class ConnectTest extends TestCase
      */
     public function testPOSTRequestWithWrongPortConnectExceptionIsThrown()
     {
-        $endpoint = (new Endpoint('timeout'))
+        $endpoint = (new Endpoint('any'))
             ->setUrl('http://localhost:9999/timeout');
 
         $endpoint->post();
@@ -41,8 +40,8 @@ class ConnectTest extends TestCase
      */
     public function testGetRequestWithWrongAddressConnectExceptionIsThrown()
     {
-        $endpoint = (new Endpoint('timeout'))
-            ->setUrl('http://172.16.0.0:9999/wrongPort');
+        $endpoint = (new Endpoint('any'))
+            ->setUrl('http://127.0.0.2:9999/wrongPort');
 
         $endpoint->get();
     }
@@ -52,7 +51,7 @@ class ConnectTest extends TestCase
      */
     public function testGetRequestWithWrongDomainConnectExceptionIsThrown()
     {
-        $endpoint = (new Endpoint('timeout'))
+        $endpoint = (new Endpoint('any'))
             ->setUrl('https://wrongDomain.see/');
 
         $endpoint->get();
