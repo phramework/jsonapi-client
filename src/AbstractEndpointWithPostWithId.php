@@ -4,7 +4,9 @@ declare(strict_types=1);
 namespace Phramework\JSONAPI\Client;
 
 use Phramework\JSONAPI\Client\Directive\Directive;
+use Phramework\JSONAPI\Client\Exceptions\NetworkException;
 use Phramework\JSONAPI\Client\Exceptions\ResponseException;
+use Phramework\JSONAPI\Client\Exceptions\TimeoutException;
 use Phramework\JSONAPI\Client\Response\JSONAPIResource;
 
 /**
@@ -16,9 +18,11 @@ abstract class AbstractEndpointWithPostWithId extends AbstractEndpoint
     /**
      * @param \stdClass         $attributes
      * @param RelationshipsData $relationships
-     * @param Directive[]  ...$directives
+     * @param Directive  ...$directives
      * @return JSONAPIResource
      * @throws ResponseException
+     * @throws TimeoutException
+     * @throws NetworkException
      */
     abstract public function postWithId(
         string $id,
