@@ -56,7 +56,7 @@ class JSONAPIResource extends Response
      */
     public function getIncluded(): array
     {
-        return $this->included;
+        return $this->included ?? [];
     }
 
     public function __get($name)
