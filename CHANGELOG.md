@@ -1,3 +1,8 @@
+## 2.6.1
+### Fixed
+- JSONAPIResource::getIncluded to return [] when no included resources provided
+- Collection::getIncluded to return [] when no included resources provided
+
 ## 2.6.0
 ### Added
 - ConnectException

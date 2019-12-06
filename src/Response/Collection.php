@@ -52,7 +52,7 @@ class Collection extends Response implements \ArrayAccess
      */
     public function getIncluded(): array
     {
-        return $this->included;
+        return $this->included ?? [];
     }
 
     public function offsetSet($offset, $value)
