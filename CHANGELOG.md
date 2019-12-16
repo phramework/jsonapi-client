@@ -1,3 +1,7 @@
+## 2.6.2
+### Fixed
+- Guzzle dependency constraint
+
 ## 2.6.1
 ### Fixed
 - JSONAPIResource::getIncluded to return [] when no included resources provided
