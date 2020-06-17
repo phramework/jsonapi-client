@@ -92,7 +92,7 @@ abstract class Response
             if ($decoded === false || $decoded === null) {
                 throw new \JsonException($generalErrorMessage);
             }
-        } else{
+        } else {
 
             //Get the last JSON error.
             $jsonError = json_last_error();
