@@ -43,6 +43,7 @@ abstract class Response
     /**
      * Parse errors object, will copy any top members available at this
      * @param ResponseInterface $response
+     * @throws \JsonException
      */
     public function __construct(ResponseInterface $response)
     {
@@ -52,7 +53,7 @@ abstract class Response
             $response->getBody()->rewind();
         }
 
-        $body = json_decode($response->getBody()->getContents());
+        $body = $this->decodeValidJson($response->getBody()->getContents());
 
         if ($body) {
             $members = array_keys(get_object_vars($this));
@@ -61,6 +62,73 @@ abstract class Response
                 if (isset($body->{$member})) {
                     $this->{$member} = $body->{$member};
                 }
+            }
+        }
+    }
+
+    /**
+     * @throws \JsonException
+     */
+    protected function decodeValidJson(string $json)
+    {
+        $body = json_decode($json, false, 512, JSON_THROW_ON_ERROR);
+
+        // Check and throw exception in case of unhandled decode error
+        $this->throwOnJsonLastError($body);
+
+        return $body;
+    }
+
+    /**
+     * @throws \JsonException
+     */
+    private function throwOnJsonLastError($decoded)
+    {
+        $generalErrorMessage = 'Could not decode JSON!';
+
+        //Backwards compatability.
+        if (!function_exists('json_last_error')) {
+
+            if ($decoded === false || $decoded === null) {
+                throw new \JsonException($generalErrorMessage);
+            }
+        } else{
+
+            //Get the last JSON error.
+            $jsonError = json_last_error();
+
+            //In some cases, this will happen.
+            if (is_null($decoded) && $jsonError == JSON_ERROR_NONE) {
+                throw new \JsonException($generalErrorMessage);
+            }
+
+            //If an error exists.
+            if ($jsonError != JSON_ERROR_NONE) {
+
+                //Use a switch statement to figure out the exact error.
+                switch ($jsonError) {
+                    case JSON_ERROR_DEPTH:
+                        $error = 'Maximum depth exceeded!';
+                        break;
+                    case JSON_ERROR_STATE_MISMATCH:
+                        $error = 'Underflow or the modes mismatch!';
+                        break;
+                    case JSON_ERROR_CTRL_CHAR:
+                        $error = 'Unexpected control character found';
+                        break;
+                    case JSON_ERROR_SYNTAX:
+                        $error = 'Malformed JSON';
+                        break;
+                    case JSON_ERROR_UTF8:
+                        $error = 'Malformed UTF-8 characters found!';
+                        break;
+                    default:
+                        $error = 'Unknown error!';
+                        break;
+                }
+
+
+                throw new \JsonException(sprintf('%s %s', $generalErrorMessage, $error));
             }
         }
     }
