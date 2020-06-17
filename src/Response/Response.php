@@ -88,12 +88,10 @@ abstract class Response
 
         //Backwards compatability.
         if (!function_exists('json_last_error')) {
-
             if ($decoded === false || $decoded === null) {
                 throw new \JsonException($generalErrorMessage);
             }
         } else {
-
             //Get the last JSON error.
             $jsonError = json_last_error();
 
@@ -104,7 +102,6 @@ abstract class Response
 
             //If an error exists.
             if ($jsonError != JSON_ERROR_NONE) {
-
                 //Use a switch statement to figure out the exact error.
                 switch ($jsonError) {
                     case JSON_ERROR_DEPTH:
@@ -126,8 +123,7 @@ abstract class Response
                         $error = 'Unknown error!';
                         break;
                 }
-
-
+                
                 throw new \JsonException(sprintf('%s %s', $generalErrorMessage, $error));
             }
         }
