@@ -10,7 +10,8 @@ use Psr\Http\Message\StreamInterface;
 
 class ResponseTest extends TestCase
 {
-    private function getMockResponseInterface(string $responseBody): ResponseInterface {
+    private function getMockResponseInterface(string $responseBody): ResponseInterface
+    {
         $responseStreamBody = \Mockery::mock(StreamInterface::class)
             ->shouldReceive('__toString')
             ->andReturn($responseBody)
