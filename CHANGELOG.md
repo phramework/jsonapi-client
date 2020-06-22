@@ -1,3 +1,7 @@
+## 2.6.3
+### Added
+- JSON validator in Response to throw JsonException when http response is not valid JSON 
+
 ## 2.6.2
 ### Fixed
 - Guzzle dependency constraint

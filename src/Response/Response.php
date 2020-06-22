@@ -43,6 +43,7 @@ abstract class Response
     /**
      * Parse errors object, will copy any top members available at this
      * @param ResponseInterface $response
+     * @throws \JsonException
      */
     public function __construct(ResponseInterface $response)
     {
@@ -52,7 +53,7 @@ abstract class Response
             $response->getBody()->rewind();
         }
 
-        $body = json_decode($response->getBody()->getContents());
+        $body = json_decode($response->getBody()->getContents(), false, 512, JSON_THROW_ON_ERROR);
 
         if ($body) {
             $members = array_keys(get_object_vars($this));
