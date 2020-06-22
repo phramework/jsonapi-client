@@ -34,7 +34,7 @@ class ResponseTest extends TestCase
         return $responseMocked;
     }
 
-    public function testConstruct__CorrectJson()
+    public function testConstruct__CorrectJson(): void
     {
         $givenCorrectResponse = '[{"a": "b"}]';
 
@@ -45,7 +45,7 @@ class ResponseTest extends TestCase
         $this->assertTrue(true);
     }
 
-    public function testConstruct__InvalidJson()
+    public function testConstruct__InvalidJson(): void
     {
         $givenCorrectResponse = '[{"a": "b"}';
 

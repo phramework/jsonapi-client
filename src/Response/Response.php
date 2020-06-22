@@ -69,7 +69,7 @@ abstract class Response
     /**
      * @throws \JsonException
      */
-    protected function decodeValidJson(string $json)
+    protected function decodeValidJson(string $json): string
     {
         $body = json_decode($json, false, 512, JSON_THROW_ON_ERROR);
 
@@ -82,7 +82,7 @@ abstract class Response
     /**
      * @throws \JsonException
      */
-    private function throwOnJsonLastError($decoded)
+    private function throwOnJsonLastError($decoded): void
     {
         $generalErrorMessage = 'Could not decode JSON!';
 
