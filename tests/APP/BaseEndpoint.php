@@ -30,7 +30,7 @@ trait BaseEndpoint
      */
     protected $endpoint;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->resourceType = 'article';
 

@@ -13,26 +13,25 @@ use Phramework\JSONAPI\Client\Exceptions\TimeoutException;
  */
 class TimeoutTest extends TestCase
 {
-    /**
-     * @expectedException \Phramework\JSONAPI\Client\Exceptions\TimeoutException
-     */
     public function testGetRequestTimeoutExceptionIsThrown()
     {
         $endpoint = (new Endpoint('timeout'))
             ->setUrl('http://localhost:8005/timeout')
             ->withTimeout(2);
 
+        $this->expectException(TimeoutException::class);
+
         $endpoint->get();
     }
 
-    /**
-     * @expectedException \Phramework\JSONAPI\Client\Exceptions\TimeoutException
-     */
     public function testPOSTRequestTimeoutExceptionIsThrown()
     {
         $endpoint = (new Endpoint('timeout'))
             ->setUrl('http://localhost:8005/timeout')
             ->withTimeout(2);
+
+
+        $this->expectException(TimeoutException::class);
 
         $endpoint->post();
     }
