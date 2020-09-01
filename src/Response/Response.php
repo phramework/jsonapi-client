@@ -53,7 +53,13 @@ abstract class Response
             $response->getBody()->rewind();
         }
 
-        $body = json_decode($response->getBody()->getContents(), false, 512, JSON_THROW_ON_ERROR);
+        $contents = $response->getBody()->getContents();
+
+        if (empty($contents) && $response->getStatusCode() === 204) {
+            return;
+        }
+
+        $body = json_decode($contents, false, 512, JSON_THROW_ON_ERROR);
 
         if ($body) {
             $members = array_keys(get_object_vars($this));

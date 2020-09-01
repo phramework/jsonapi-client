@@ -1,3 +1,9 @@
+## 2.6.4
+### Fixed
+- Response to allow empty response when Status Code is 204
+### Changed
+- Minimum PHP version to ^7.3
+
 ## 2.6.3
 ### Added
 - JSON validator in Response to throw JsonException when http response is not valid JSON 
