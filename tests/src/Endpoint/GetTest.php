@@ -20,6 +20,7 @@ namespace Phramework\JSONAPI\Client;
 use PHPUnit\Framework\TestCase;
 use Phramework\JSONAPI\APP\BaseEndpoint;
 use Phramework\JSONAPI\Client\Exceptions\ResponseException;
+use Phramework\JSONAPI\Client\Exceptions\TimeoutException;
 
 /**
  * @author Xenofon Spafaridis <nohponex@gmail.com>
@@ -36,7 +37,7 @@ class GetTest extends TestCase
      */
     protected $endpoint;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->resourceType = 'article';
 
@@ -44,37 +45,35 @@ class GetTest extends TestCase
             ->setUrl('http://localhost:8005/' . $this->resourceType);
     }
 
-    public function testGet()
+    public function testGet(): void
     {
         $this->get();
     }
 
-    /**
-     * @expectedException \Exception
-     */
-    public function testGetNotFoundServer()
+    public function testGetNotFoundServer(): void
     {
         $endpoint = (new Endpoint('not-found'))
             ->setUrl('http://404-not-found-server.com/resource');
+
+        $this->expectException(\Exception::class);
 
         $collection = $endpoint->get();
 
         $this->markTestIncomplete();
     }
 
-    /**
-     * @expectedException \Exception
-     */
-    public function testGetNotFoundResource()
+    public function testGetNotFoundResource(): void
     {
         $id = (string) 2**31; //Very large resource id, probably is going to missing
+
+        $this->expectException(\Exception::class);
 
         $resource = $this->endpoint->getById($id);
 
         $this->markTestIncomplete();
     }
 
-    public function testGetNotFoundResourceDetails()
+    public function testGetNotFoundResourceDetails(): void
     {
         $id = (string) 2**31; //Very large resource id, probably is going to missing
 

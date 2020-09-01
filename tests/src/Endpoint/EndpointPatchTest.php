@@ -29,10 +29,7 @@ class EndpointPatchTest extends TestCase
 {
     use BaseEndpoint;
 
-    /**
-     * @covers ::post
-     */
-    public function testPost()
+    public function testPost(): void
     {
         $post = $this->endpoint->post(
             (object) [

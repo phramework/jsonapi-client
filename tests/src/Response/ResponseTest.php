@@ -10,6 +10,9 @@ use Psr\Http\Message\StreamInterface;
 
 class ResponseTest extends TestCase
 {
+    /**
+     * @return MockInterface|ResponseInterface
+     */
     private function getMockResponseInterface(string $responseBody): ResponseInterface
     {
         $responseStreamBody = \Mockery::mock(StreamInterface::class)
@@ -39,6 +42,21 @@ class ResponseTest extends TestCase
         $givenCorrectResponse = '[{"a": "b"}]';
 
         $givenResponse = $this->getMockResponseInterface($givenCorrectResponse);
+
+        $collection = new Collection($givenResponse);
+
+        $this->assertTrue(true);
+    }
+
+    public function testConstruct__CorrectJsonWhenEmpty(): void
+    {
+        $givenCorrectResponse = '';
+
+        $givenResponse = $this->getMockResponseInterface($givenCorrectResponse)
+            ->shouldReceive('getStatusCode')
+            ->once()
+            ->andReturn(204)
+            ->getMock();
 
         $collection = new Collection($givenResponse);
 

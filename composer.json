@@ -15,16 +15,17 @@
     }
   ],
   "require": {
-    "php": "^7.2|^8.0.0",
+    "php": "^7.3|^8.0.0",
     "phramework/util": "^0.0.0",
     "guzzlehttp/guzzle": "^6.3.3",
     "phramework/operator": "*"
   },
   "require-dev": {
+    "mockery/mockery": "dev-master",
     "roave/security-advisories": "dev-master",
     "squizlabs/php_codesniffer": "*",
     "satooshi/php-coveralls": "^1.0",
-    "phpunit/phpunit": "^7.5.9",
+    "phpunit/phpunit": "^8.0.0",
     "slim/slim": "^3.0",
     "oscarotero/psr7-middlewares": "^3.16",
     "codacy/coverage": "^1.0",

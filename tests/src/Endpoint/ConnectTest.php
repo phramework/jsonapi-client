@@ -13,46 +13,42 @@ use Phramework\JSONAPI\Client\Exceptions\ConnectException;
  */
 class ConnectTest extends TestCase
 {
-    /**
-     * @expectedException \Phramework\JSONAPI\Client\Exceptions\ConnectException
-     */
     public function testGetRequestWithWrongPortConnectExceptionIsThrown()
     {
         $endpoint = (new Endpoint('any'))
             ->setUrl('http://localhost:9999/wrongPort');
 
+        $this->expectException(ConnectException::class);
+
         $endpoint->get();
     }
 
-    /**
-     * @expectedException \Phramework\JSONAPI\Client\Exceptions\ConnectException
-     */
     public function testPOSTRequestWithWrongPortConnectExceptionIsThrown()
     {
         $endpoint = (new Endpoint('any'))
             ->setUrl('http://localhost:9999/timeout');
 
+        $this->expectException(ConnectException::class);
+
         $endpoint->post();
     }
 
-    /**
-     * @expectedException \Phramework\JSONAPI\Client\Exceptions\ConnectException
-     */
     public function testGetRequestWithWrongAddressConnectExceptionIsThrown()
     {
         $endpoint = (new Endpoint('any'))
             ->setUrl('http://127.0.0.2:9999/wrongPort');
 
+        $this->expectException(ConnectException::class);
+
         $endpoint->get();
     }
 
-    /**
-     * @expectedException \Phramework\JSONAPI\Client\Exceptions\ConnectException
-     */
     public function testGetRequestWithWrongDomainConnectExceptionIsThrown()
     {
         $endpoint = (new Endpoint('any'))
             ->setUrl('https://wrongDomain.see/');
+
+        $this->expectException(ConnectException::class);
 
         $endpoint->get();
     }
