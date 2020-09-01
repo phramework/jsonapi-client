@@ -55,8 +55,7 @@ trait BaseEndpoint
             $collection->getStatusCode()
         );
 
-        $this->assertInternalType(
-            'array',
+        $this->assertIsArray(
             $collection->getData()
         );
 
@@ -68,9 +67,8 @@ trait BaseEndpoint
         );
 
         $id = $collection->getData()[0]->id;
-        $id = $collection[0]->id;
 
-        $this->assertInternalType(
+        $this->assertIsString(
             'string',
             $id
         );
