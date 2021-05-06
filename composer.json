@@ -17,11 +17,11 @@
   "require": {
     "php": "^7.3|^8.0.0",
     "phramework/util": "^0.0.0",
-    "guzzlehttp/guzzle": "^6.3.3",
+    "guzzlehttp/guzzle": "^6.3.3|^7.1.1",
     "phramework/operator": "*"
   },
   "require-dev": {
-    "mockery/mockery": "dev-master",
+    "mockery/mockery": "^1.4.3",
     "roave/security-advisories": "dev-master",
     "squizlabs/php_codesniffer": "*",
     "satooshi/php-coveralls": "^1.0",

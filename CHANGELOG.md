@@ -1,3 +1,7 @@
+## 2.6.5
+### Changed
+- Support guzzle 7
+
 ## 2.6.4
 ### Fixed
 - Response to allow empty response when Status Code is 204
