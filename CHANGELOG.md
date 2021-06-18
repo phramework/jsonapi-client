@@ -1,3 +1,7 @@
+## 2.6.7
+### Fixed
+- withPayload
+
 ## 2.6.6
 ### Fixed
 - TimeoutException behaviour

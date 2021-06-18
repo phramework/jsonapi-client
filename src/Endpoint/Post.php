@@ -196,7 +196,7 @@ trait Post
             );
         }
 
-        $response = $this->handleRequest($client, $request);
+        $response = HandleRequest::handleRequest($client, $request);
 
         return new JSONAPIResource($response);
     }
