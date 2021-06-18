@@ -1,3 +1,7 @@
+## 2.6.6
+### Fixed
+- TimeoutException behaviour
+
 ## 2.6.5
 ### Changed
 - Support guzzle 7
