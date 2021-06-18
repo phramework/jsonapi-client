@@ -179,7 +179,7 @@ trait Post
             $body->data->relationships = $relationships->getRelationships();
         }
 
-        $client = new \GuzzleHttp\Client([]);
+        $client = new \GuzzleHttp\Client($this->getGuzzleOptions());
 
         $request = new Request(
             $method,

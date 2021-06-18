@@ -17,17 +17,10 @@ declare(strict_types=1);
  */
 namespace Phramework\JSONAPI\Client\Endpoint;
 
-use GuzzleHttp\Exception\BadResponseException;
 use GuzzleHttp\Psr7\Request;
 use Phramework\JSONAPI\Client\Client;
 use Phramework\JSONAPI\Client\Directive\Directive;
-use Phramework\JSONAPI\Client\Exceptions\ConnectException;
-use Phramework\JSONAPI\Client\Exceptions\NetworkException;
-use Phramework\JSONAPI\Client\Exceptions\ResponseException;
-use Phramework\JSONAPI\Client\Exceptions\TimeoutException;
 use Phramework\JSONAPI\Client\Response\Collection;
-use Phramework\JSONAPI\Client\Response\Errors;
-use Psr\Http\Message\ResponseInterface;
 
 trait Get
 {
@@ -52,7 +45,7 @@ trait Get
             $questionMark = true;
         }
 
-        $client = new \GuzzleHttp\Client([]);
+        $client = new \GuzzleHttp\Client($this->getGuzzleOptions());
 
         $request = new Request(Client::METHOD_GET, $url);
 
@@ -64,47 +57,18 @@ trait Get
             );
         }
 
-        $response = $this->handleRequest($client, $request);
+        $response = HandleRequest::handleRequest($client, $request);
 
         return new Collection($response);
     }
 
-    protected function handleRequest(
-        $client,
-        $request
-    ): ResponseInterface {
-        try {
-            return $client->send($request, $this->getGuzzleOptions());
-        } catch (\GuzzleHttp\Exception\ConnectException $exception) {
-            if (isset($exception->getHandlerContext()['errno'])) {
-                switch ($exception->getHandlerContext()['errno']) {
-                    case 5: //CURLE_COULDNT_RESOLVE_PROXY
-                    case 6: //CURLE_COULDNT_RESOLVE_HOST
-                    case 7: //CURLE_COULDNT_CONNECT
-                    case 16: //CURLE_HTTP2
-                    case 35: //CURLE_SSL_CONNECT_ERROR
-                        throw new ConnectException($exception);
-                    case 28:
-                        throw new TimeoutException($exception);
-                }
-            }
 
-            throw new NetworkException($exception);
-        } catch (BadResponseException $exception) {
-            throw new ResponseException(
-                (new Errors($exception->getResponse()))
-            );
-        }
-    }
-
-    /**
-     * @return array
-     */
     protected function getGuzzleOptions(): array
     {
-        $options = [
-            'timeout' => (float) $this->timeout,
+        return [
+            'timeout' => (float) $this->getTimeout(),
+            'connect_timeout' => (float) $this->getTimeout(),
+            'read_timeout' => (float) $this->getTimeout(),
         ];
-        return $options;
     }
 }

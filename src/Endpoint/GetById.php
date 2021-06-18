@@ -59,7 +59,7 @@ trait GetById
             $questionMark = true;
         }
 
-        $client = new \GuzzleHttp\Client([]);
+        $client = new \GuzzleHttp\Client($this->getGuzzleOptions());
 
         $request = new Request(Client::METHOD_GET, $url);
 
@@ -71,7 +71,7 @@ trait GetById
             );
         }
 
-        $response = $this->handleRequest($client, $request);
+        $response = HandleRequest::handleRequest($client, $request);
 
         return new JSONAPIResource($response);
     }
